@@ -1,0 +1,142 @@
+\documentclass{article}
+\usepackage{amsmath,amsthm}
+\usepackage{amssymb,latexsym}
+\usepackage{float}
+\usepackage{fullpage}
+\usepackage{times}
+
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{question}[theorem]{Question}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{observation}[theorem]{Observation}
+\newtheorem{proposition}{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{fact}[theorem]{Fact}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{example}{Example}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{alg}[theorem]{Algorithm}
+
+\newcommand{\set}[1]{{\left\{#1\right\}}}    % braces for set notation
+\newcommand{\ve}[1]{\mathbf{#1}}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\complex}{{\mathbb C}}
+\newcommand{\reals}{{\mathbb R}}
+\newcommand{\ints}{{\mathbb Z}}
+\newcommand{\nats}{{\mathbb N}}
+\newcommand{\proj}[1]{\mbox{$|#1\rangle \!\langle #1 |$}}
+\newcommand{\enc}[1]{\left<#1\right>}
+\newcommand{\spa}[1]{\mathcal{#1}}
+\newcommand{\ayes}{A_{\rm yes}}
+\newcommand{\ano}{A_{\rm no}}
+
+\begin{document}
+
+\title{
+    CMSC 303 Introduction to Theory of Computation, VCU\\
+    Assignment: 1\\
+    Name: Steven Hernandez
+}
+
+\date{}
+
+\maketitle
+\vspace{-10mm}
+
+\section{Exercises}
+\begin{enumerate}
+    \item % 1
+        \begin{enumerate}
+            \item $A \not\subseteq B$
+            \item $A \subseteq B$
+            \item $\set{x,y,z}$
+            \item $\set{x,y}$
+            \item $\set{(x,x),(x,y),(y,x),(y,y),(z,x),(z,y)}$
+            \item $\set{\emptyset,\set{x},\set{y},\set{x,y}}$
+        \end{enumerate}
+    \item % 2
+        $A \times B$ would simply have $a \times b$ elements because each element in $A$ will have to pair with each element of $B$. \\
+        Let $A$ have $a$ elements, $B$ have $b$ elements and $n \in A$. \\
+        From here we know that for just the one element $n$, we will have $S =\set{(n,B_0), (n,B_1),\ldots,(n,B_b)}$ such that $S \subseteq A \times B$ and where $\abs{S} = b$. \\
+        Because we know this will happen for all elements in $A$, $\abs{A \times B} = ab$.
+    \item % 3
+        Let $C$ be a set such that $\abs{C}$ equals to some integer $c$. \\
+        For each element in $C$, there are two options per element when building the sets contained within the power set; either the element appears or doesn't appear in the set. \\
+        Thus there would be $2^c$ elements(sets) within $C$.
+    \item % 4
+        \begin{enumerate}
+            \item $f(2) = 7$
+            \item
+                $domain = \mathbb{R}$ \\
+                $codomain = \mathbb{R}$
+            \item $g(2,10) = 9$
+            \item
+                $domain = \mathbb{R} \times \mathbb{R}$ \\
+                $codomain = \mathbb{R}$
+            \item $g(4,f(4)) = 8$
+        \end{enumerate}
+    \item % 5
+        \begin{enumerate}
+            \item $hasClassTogether$
+            \item % TODO
+            \item $canSeeFaceStraightOnWithoutMirror$ (or similar relective surface)
+        \end{enumerate}
+\end{enumerate}
+
+\section{Problems}
+\begin{enumerate}
+    \item % 1
+        The induction step is the problem. By removing the horse in sentence 2, the author assumes that $H_1$ is the same as the set assumed to be true in the first sentence. This however is not the case, the author can not make the assumption that $H_1$ nor $H_2$ contain horses of the same color from the information given.
+    \item % 2
+        \textbf{Claim:}
+        \[
+            \sum_{m=0}^n m = \frac{n(n+1)}{2}
+        \]
+        \begin{proof}
+            \textbf{Base Case:} Prove for $n = 0$.
+            \[
+                \sum_{m=0}^n m = 0.
+            \]
+
+            \[
+                \frac{0(0+1)}{2} = \frac{0}{2} = 0.
+            \]
+
+            \[
+                0 = 0.
+            \]
+
+            \textbf{Induction Step:} For $k \geq 0$,  we assume
+            \[
+                \sum_{m=0}^k m = \frac{k(k+1)}{2}
+            \]
+            is true and want to prove that
+            \[
+                \sum_{m=0}^{k+1} m = \frac{(k+1)(k+1+1)}{2}
+            \]
+            is also true as a result.
+
+            Note:
+            \[
+                \sum_{m=0}^{k+1} m = \sum_{m=0}^k m + (k + 1)
+            \]
+
+            \begin{align*}
+                \sum_{m=0}^{k+1} m &= \frac{(k+1)(k+1+1)}{2} \\
+                &= \frac{(k+1)(k+2)}{2} \\
+                &= \frac{k(k+1) + 2(k+1)}{2} \\
+                &= \frac{k(k+1)}{2} + \frac{2(k+1)}{2} &&\text{(by distributive property)}\\
+                &= \frac{k(k+1)}{2} + (k+1) &&\text{(dividing by 2)}\\
+                &= \frac{k(k+1)}{2} + (k+1).
+                &&\qedhere
+            \end{align*}
+
+            Thus proving the claim.
+        \end{proof}
+\end{enumerate}
+
+\end{document}
