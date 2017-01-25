@@ -82,7 +82,7 @@
     \item % 5
         \begin{enumerate}
             \item $hasClassTogether$
-            \item % TODO
+            \item $notXOR$ (where items $\in \set{0,1}$) % TODO
             \item $canSeeFaceStraightOnWithoutMirror$ (or similar relective surface)
         \end{enumerate}
 \end{enumerate}
@@ -110,11 +110,12 @@
                 0 = 0.
             \]
 
-            \textbf{Induction Step:} For $k \geq 0$,  we assume
+            \textbf{Induction Hypothesis:} For $k \geq 0$,  we assume to be true:
             \[
                 \sum_{m=0}^k m = \frac{k(k+1)}{2}
             \]
-            is true and want to prove that
+
+            \textbf{Induction Step:} From the induction hypothesis, we want to prove that
             \[
                 \sum_{m=0}^{k+1} m = \frac{(k+1)(k+1+1)}{2}
             \]
