@@ -87,9 +87,9 @@
                    \node[state,accepting] (q_2) [right=of q_1] {$q_2$};
                     \path[->]
                     (q_0) edge [loop above] node {0} (q_0)
-                          edge [bend left=10, above] node {1} (q_1)
-                    (q_1) edge [bend left=10, below] node {0} (q_0)
-                          edge node {1} (q_2)
+                          edge [above] node {1} (q_1)
+                    (q_1) edge [loop above] node {0} (q_1)
+                          edge [above] node {1} (q_2)
                     (q_2) edge [loop above] node {0,1} (q_2);
                 \end{tikzpicture}
                 \\
@@ -119,9 +119,9 @@
                     (q_a) edge [above] node {$\varepsilon$} (q_0)
                           edge [below] node {$\varepsilon$} (r_0)
                     (q_0) edge [loop above] node {0} (q_0)
-                          edge [bend left=10, above] node {1} (q_1)
-                    (q_1) edge [bend left=10, below] node {0} (q_0)
-                          edge node {1} (q_2)
+                          edge [above] node {1} (q_1)
+                    (q_1) edge [loop above] node {0} (q_1)
+                          edge [above] node {1} (q_2)
                     (q_2) edge [loop above] node {0,1} (r_2)
                     (r_0) edge [above] node {0} (r_1)
                           edge [loop above] node {1} (r_0)
