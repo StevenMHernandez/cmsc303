@@ -83,20 +83,19 @@
             \item
                 $M_a = (Q, \Sigma, \delta, q, F)$ such that:
 
-                \[  Q = \set{q_0} \\
-                    \Sigma is our language \\
-                    q = q_0 \\
-                    F = \set{q_0} \\
-                    \delta = \epsilon
-                \]
+                $Q = \set{q_0}$ \\
+                $\Sigma \text{ is our language }$ \\
+                $q = q_0$ \\
+                $F = \set{q_0}$ \\
+                $\delta = \epsilon$
+
                 because any transitions would mean a character was read, which would not be a part of the language we are looking for.
             \item
                 $M_b = (Q, \Sigma, \delta, q, F)$ such that:
 
-                \[  Q = \set{q_0, q_1, q_2, q_3} \\
-                    q = q_0 \\
-                    F = \set{q_3} \\
-                \]
+                $Q = \set{q_0, q_1, q_2, q_3}$ \\
+                $q = q_0$ \\
+                $F = \set{q_3}$
 
                 Define $\delta$ by:
 
@@ -226,13 +225,72 @@
     \item % 4
         \begin{enumerate}
             \item
+                Claim: $L = \set{www|w \in \set{0,1}^*}$ is not regular.
+
+                Proof: Assume to the contrary that $L$ is regular.
+                Let $p$ be the pumping length given by the pumping lemma.
+                We choose $s = yyy$ such that $\abs{y} = p$ and $y \in \set{0,1}^*$.
+
+                By condition 3 of the pumping lemma, $\abs{xy} \le p$, we can conclude that $\abs{xy} \le \abs{y}$.
+                Thus, by pumping down $s$ by setting $i = 0$, no matter the values for $x,y,z$ we will be creating a new string $s_2 = y`yy$ such that $\abs{y`} < \abs{y}$.
+                Thus $s_2 \not\in L$. Contradiction.
             \item
+                Claim: $L = \set{1^n0^m1^n | m, n \ge 0}$ is not regular.
+
+                Proof: Assume to the contrary that $L$ is regular.
+                Let $p$ be the pumping length given by the pumping lemma.
+                We choose $s = 1^{p}0^{1}1^{p}$.
+                Notice, because $s \in L$ and $\abs{s} > p$, the pumping lemma guarantees that $s$ can be split into three peices $s = xyz$, where for any $i \ge 0$ the string $xy^iz$ is in $L$.
+
+                Because by the condition 3 of the pumping lemma $\abs{xy} \le p$, both $x$ and $y$ can only contains $1$s from the beginning of the string $s$.
+                Thus, $x = 1^*$, $y = 1^+$ (because of condition 2, $\abs{y} > 0)$ and $z = 1^*01^p$.
+                So, if we were to change $i$ from $s = xy^iz$ such that $i=0$, then out new string would become $1^{p-\abs{y}}0^{1}1^{p} \not\in L$. Contradiction.
             \item
+                Claim: $L = \set{x|x\in\set{0,1}^* \text{is not a palindrome}}$ is not regular.
+
+                Proof: We begin by creating a new language $L_2 = \set{s|s\in\set{0,1}^* \text{is a palindrome}}$.
+                Note, this language is the inverse of $L$.
+                Understand that if we have some DFA $M$, with $F$ equal to the final states of $M$, then we can get $M`$ (inverse of $M$) by taking $Q - F$ from the original $M$.
+                Thus, if we are able to show that $L_2$ is not regular, we can show as well that $L$ is not regular because DFAs for each language would be the exact same other than the values for $F$ for each language.
+
+                Now, assume to the contrary, that $L_2$ is regular.
+                Let $p$ be the pumping length given by the pumping lemma.
+                We choose a string $s = 1^{p}0^{1}1^{p}$.
+                Notice, because $s \in L$ and $\abs{s} > p$, the pumping lemma guarantees that $s$ can be split into three peices $s = xyz$, where for any $i \ge 0$ the string $xy^iz$ is in $L$.
+
+                Because by the condition 3 of the pumping lemma $\abs{xy} \le p$, both $x$ and $y$ can only contains $1$s from the beginning of the string $s$.
+                Thus, $x = 1^*$, $y = 1^+$ (because of condition 2, $\abs{y} > 0)$ and $z = 1^*01^p$.
+                So, if we were to change $i$ from $s = xy^iz$ such that $i=0$, then out new string would become $1^{p-\abs{y}}0^{1}1^{p} \not\in L_2$. Contradiction.
+
+                As stated above, because $L_2$ is not regular and is the inverse of $L$, $L$ is not regular either.
         \end{enumerate}
     \item % 5
         \begin{enumerate}
             \item
+                The problem here, is that the pumping lemma does not allow us to select the values for $x,y,z$ explicitely.
+                We take into account all different possibilities for these variables.
             \item
+                Claim: $B = \set{0^kx0^k | k \ge 1 \text{ and } x \in \Sigma^*}$ is regular.
+
+                Notice: we don't really have to be aware of anything other than beginning and ending with a zero because $x \in \Sigma^*$ handles any discrepincies in number of zeros.
+                So for example, $0010 \in B$ where $k=1$ and $x = 01 \in \Sigma^*$.
+
+                Proof: We construct an NFA $M=(Q,\Sigma,\delta,q,F)$ that recognizes $B$ such that:
+
+                $Q = \set{q_0, q_1, q_2}$ \\
+                $q = q_0$ \\
+                $F = \set{q_2}$ \\
+                Define $\delta$ by:
+
+                \begin{tabular}{|c | c   c|}
+                    \hline
+                    $\delta$ & 0      & 1 \\
+                    \hline
+                    $q_0$    & $\set{q_1}$  & $\emptyset$ \\
+                    $q_1$    & $\set{q_1,q_2}$  & $\set{q_1}$ \\
+                    $q_2$    & $\emptyset$  & $\emptyset$ \\
+                    \hline
+                \end{tabular}
         \end{enumerate}
 \end{enumerate}
 
