@@ -87,8 +87,9 @@
                     \Sigma is our language \\
                     q = q_0 \\
                     F = \set{q_0} \\
-                    \delta = \epsilon because any transitions would mean a character was read, which would not be a part of the language we are looking for.
+                    \delta = \epsilon
                 \]
+                because any transitions would mean a character was read, which would not be a part of the language we are looking for.
             \item
                 $M_b = (Q, \Sigma, \delta, q, F)$ such that:
 
@@ -111,6 +112,117 @@
                 \end{tabular}
         \end{enumerate}
     \item % 3
+        State Diagram for $M$:
+
+        \begin{tikzpicture}
+           \node[state,initial,accepting] (q_1)   {$q_1$};
+           \node[state] (q_2) [right=of q_1] {$q_2$};
+           \node[state,accepting] (q_3) [right=of q_2] {$q_3$};
+            \path[->]
+            (q_1) edge [above] node {$0,1$} (q_2)
+            (q_2) edge [loop above] node {$0$} (q_2)
+                  edge [bend left=10, above] node {$1$} (q_3)
+            (q_3) edge [bend left=40, below] node {$0$} (q_1)
+                  edge [bend left=10, below] node {$1$} (q_2);
+        \end{tikzpicture}
+
+        Steps for reaching regular expression for $M$:
+
+        \begin{enumerate}
+            \item
+                Add $q_{start}$ and $q_{end}$ as explained in Lemma 1.60
+
+                \begin{tikzpicture}
+                   \node[state,initial] (q_start)   {$q_{start}$};
+                   \node[state] (q_1) [below=of q_start] {$q_1$};
+                   \node[state] (q_2) [right=of q_1] {$q_2$};
+                   \node[state] (q_3) [right=of q_2] {$q_3$};
+                   \node[state,accepting] (q_end) [above=of q_3] {$q_{end}$};
+                    \path[->]
+                    (q_start) edge [left] node {$\epsilon$} (q_1)
+                    (q_1) edge [above] node {$0,1$} (q_2)
+                          edge [bend left=20, above] node {$\epsilon$} (q_end)
+                    (q_2) edge [loop above] node {$0$} (q_2)
+                          edge [bend left=10, above] node {$1$} (q_3)
+                    (q_3) edge [bend left=40, below] node {$0$} (q_1)
+                          edge [bend left=10, below] node {$1$} (q_2)
+                          edge [left] node {$\epsilon$} (q_end);
+                \end{tikzpicture}
+            \item
+                Update each transition to a regular expression.
+
+                \begin{tikzpicture}
+                   \node[state,initial] (q_start)   {$q_{start}$};
+                   \node[state] (q_1) [below=of q_start] {$q_1$};
+                   \node[state] (q_2) [right=of q_1] {$q_2$};
+                   \node[state] (q_3) [right=of q_2] {$q_3$};
+                   \node[state,accepting] (q_end) [above=of q_3] {$q_{end}$};
+                    \path[->]
+                    (q_start) edge [left] node {$\epsilon$} (q_1)
+                    (q_1) edge [above] node {$0\bigcup1$} (q_2)
+                          edge [bend left=20, above] node {$\epsilon$} (q_end)
+                    (q_2) edge [loop above] node {$0$} (q_2)
+                          edge [bend left=10, above] node {$1$} (q_3)
+                    (q_3) edge [bend left=40, below] node {$0$} (q_1)
+                          edge [bend left=10, below] node {$1$} (q_2)
+                          edge [left] node {$\epsilon$} (q_end);
+                \end{tikzpicture}
+            \item
+                $q_{rip}=q_2$
+
+                \begin{tikzpicture}
+                   \node[state,initial] (q_start)   {$q_{start}$};
+                   \node[state] (q_1) [below=of q_start] {$q_1$};
+                   \node[state] (q_3) [right=3cm of q_1] {$q_3$};
+                   \node[state,accepting] (q_end) [above=of q_3] {$q_{end}$};
+                    \path[->]
+                    (q_start) edge [left] node {$\epsilon$} (q_1)
+                    (q_1) edge [above] node {$(0\bigcup1)(0)^*(1)$} (q_3)
+                          edge [bend left=20, above] node {$\epsilon$} (q_end)
+                    (q_3) edge [bend left=40, below] node {$0$} (q_1)
+                          edge [loop right] node {$11$} (q_3)
+                          edge [left] node {$\epsilon$} (q_end);
+                \end{tikzpicture}
+            \item
+                Simplified to:
+
+                \begin{tikzpicture}
+                   \node[state,initial] (q_start)   {$q_{start}$};
+                   \node[state] (q_1) [below=of q_start] {$q_1$};
+                   \node[state] (q_3) [right=of q_1] {$q_3$};
+                   \node[state,accepting] (q_end) [above=of q_3] {$q_{end}$};
+                    \path[->]
+                    (q_start) edge [left] node {$\epsilon$} (q_1)
+                    (q_1) edge [above] node {$\Sigma0^*1$} (q_3)
+                          edge [bend left=20, above] node {$\epsilon$} (q_end)
+                    (q_3) edge [bend left=40, below] node {$0$} (q_1)
+                          edge [loop right] node {$11$} (q_3)
+                          edge [left] node {$\epsilon$} (q_end);
+                \end{tikzpicture}
+            \item
+                $q_{rip}=q_3$
+
+                \begin{tikzpicture}
+                   \node[state,initial] (q_start)   {$q_{start}$};
+                   \node[state] (q_1) [right=of q_start] {$q_1$};
+                   \node[state,accepting] (q_end) [right=3cm of q_1] {$q_{end}$};
+                    \path[->]
+                    (q_start) edge [above] node {$\epsilon$} (q_1)
+                    (q_1) edge [loop below] node {$(\Sigma0^*1)0$} (q_1)
+                          edge [above] node {$(\Sigma0^*1)(11)^*$} (q_end);
+                \end{tikzpicture}
+            \item
+                $q_{rip}=q_1$
+
+                \begin{tikzpicture}
+                   \node[state,initial] (q_start)   {$q_{start}$};
+                   \node[state,accepting] (q_end) [right=3cm of q_1] {$q_{end}$};
+                    \path[->]
+                    (q_start) edge [above] node {$((\Sigma0^*1)0)^*(\Sigma0^*1)(11)^*$} (q_end);
+                \end{tikzpicture}
+
+                Thus our regular expression is $((\Sigma0^*1)0)^*(\Sigma0^*1)(11)^*$.
+        \end{enumerate}
     \item % 4
         \begin{enumerate}
             \item
