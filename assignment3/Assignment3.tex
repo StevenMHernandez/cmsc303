@@ -72,7 +72,12 @@
 
                 Explicitly allows for any strings with one character or two characters or three characters of no characters.
             \item
-                $R_e = $ % TODO
+                We develop this by beginning with a DFA $M$ such that $M = \set{x | x \text{ contains } 110}$.
+                From here, we change $F = Q - F$. Now, our DFA is matching $M = \set{x | x \text{ contains } 110}$.
+
+                $R_e = \epsilon \bigcup 0^*(10)^*1 \bigcup 0^*(10)^*111^* = 0^*(10)^*1^*$ % TODO
+
+                The center group $(10)^*$ states that there must be a $0$ following directly after any $1$, or else we end up in the third part $1^*$, which prevents us from placing another zero, or else our language would allow $\Sigma^*110\Sigma^*$.
             \item
                 $R_f = \Sigma^+$
 
