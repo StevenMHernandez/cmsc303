@@ -1,0 +1,200 @@
+\documentclass{article}
+\usepackage{amsmath,amsthm}
+\usepackage{amssymb,latexsym}
+\usepackage{float}
+\usepackage{fullpage}
+\usepackage{times}
+
+% graphs
+\usepackage{tikz}
+\usepackage{forest}
+\usetikzlibrary{shadows,arrows.meta}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{question}[theorem]{Question}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{observation}[theorem]{Observation}
+\newtheorem{proposition}{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{fact}[theorem]{Fact}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{example}{Example}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{alg}[theorem]{Algorithm}
+
+\newcommand{\set}[1]{{\left\{#1\right\}}}    % braces for set notation
+\newcommand{\ve}[1]{\mathbf{#1}}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\complex}{{\mathbb C}}
+\newcommand{\reals}{{\mathbb R}}
+\newcommand{\ints}{{\mathbb Z}}
+\newcommand{\nats}{{\mathbb N}}
+\newcommand{\proj}[1]{\mbox{$|#1\rangle \!\langle #1 |$}}
+\newcommand{\enc}[1]{\left<#1\right>}
+\newcommand{\spa}[1]{\mathcal{#1}}
+\newcommand{\ayes}{A_{\rm yes}}
+\newcommand{\ano}{A_{\rm no}}
+
+\begin{document}
+
+\title{
+    CMSC 303 Introduction to Theory of Computation, VCU\\
+    Assignment: 4\\
+    Name: Steven Hernandez
+}
+
+\date{}
+
+\maketitle
+\vspace{-10mm}
+
+\begin{enumerate}
+    \item % 1
+        \begin{enumerate}
+            \item
+                \begin{forest}
+                    [E
+                        [T
+                            [F
+                                [2]
+                            ]
+                        ]
+                    ]
+                \end{forest}
+            \item
+                \begin{forest}
+                    for tree={
+                        if n children=0{
+                            font=\itshape,
+                            tier=terminal,
+                        }{},
+                    }
+                    [E
+                        [E
+                            [E
+                                [T
+                                    [F
+                                        [2]
+                                    ]
+                                ]
+                            ]
+                            [+]
+                            [T
+                                [F
+                                    [2]
+                                ]
+                            ]
+                        ]
+                        [+]
+                        [T
+                            [F
+                                [2]
+                            ]
+                        ]
+                    ]
+                \end{forest}
+            \item
+                \begin{forest}
+                    for tree={
+                        if n children=0{
+                            font=\itshape,
+                            tier=terminal,
+                        }{},
+                        base=b
+                    }
+                    [E
+                        [T
+                            [T
+                                [F
+                                    [(]
+                                    [E
+                                        [E
+                                            [T
+                                                [F
+                                                    [2]
+                                                ]
+                                            ]
+                                        ]
+                                        [+]
+                                        [T
+                                            [F
+                                                [2]
+                                            ]
+                                        ]
+                                    ]
+                                    [)]
+                                ]
+                            ]
+                            [\textit{$\times$}]
+                            [F
+                                [(]
+                                [E
+                                    [T
+                                        [F
+                                            [2]
+                                        ]
+                                    ]
+                                ]
+                                [)]
+                            ]
+                        ]
+                    ]
+                \end{forest}
+        \end{enumerate}
+    \item % 2
+        \begin{enumerate}
+            \item
+            \item
+        \end{enumerate}
+    \item % 3
+        \begin{enumerate}
+            \item
+                \[
+                    S \rightarrow 0 | 1 | 0T0 | 1T1
+                    T \rightarrow \epsilon | 1T | 0T
+                \]
+
+                Trivially $0$ and $1$ match.
+                $0T0$ $1T1$ ensure that the first and last symbol are the same before moving past $S$ into $T$.
+                $T$ simply allows you to add any symbols $\in \Sigma_{\epsilon}$ recursively within the string obtained above.
+            \item
+                \[
+                    S_0 \rightarrow 0 | 1 | 0S_{odd} | 1S_{odd}
+                    S_{odd} \rightarrow \epsilon | 0S_{even} | 1S_{even}
+                    S_{even} \rightarrow 0 | 1 | 0S_{odd} | 1S_{odd}
+                \]
+
+                Think of the labels such that $S_{odd}$ means we have an odd length currently, thus we can only add $\epsilon$ of one symbol, which then means we now have an even number of symbols (thus the $S_{even}).
+            \item
+                \[
+                    S \rightarrow \epsilon | 0 | 1 | 0S0 | 1S1
+                \]
+
+                Unlike $a$, the only variable is $S$, this is because each time we recurse, we want to ensure whatever the sub-string contains, it always begins and ends with the same symbol, thus maintaining the palindrome.
+            \item
+                \[
+                    S \rightarrow S
+                \]
+
+                The grammar continues recursively forever.
+                Never reaching only terminals, thus never reaching an accept state.
+            \item
+%                TODO:
+                \[
+
+                \]
+        \end{enumerate}
+    \item % 4
+        \begin{enumerate}
+            \item
+            \item
+            \item
+            \item
+        \end{enumerate}
+    \item % 5
+\end{enumerate}
+
+\end{document}
