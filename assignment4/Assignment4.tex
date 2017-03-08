@@ -10,6 +10,16 @@
 \usepackage{forest}
 \usetikzlibrary{shadows,arrows.meta}
 
+% grammars
+\usepackage{listings}
+
+\lstset{
+  basicstyle=\itshape,
+  xleftmargin=3em,
+  literate={->}{$\rightarrow$}{2}
+           {epsilon}{$\epsilon$}{1}
+}
+
 \newtheorem{theorem}{Theorem}
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{question}[theorem]{Question}
@@ -167,7 +177,7 @@
                     S_{even} \rightarrow 0 | 1 | 0S_{odd} | 1S_{odd}
                 \]
 
-                Think of the labels such that $S_{odd}$ means we have an odd length currently, thus we can only add $\epsilon$ of one symbol, which then means we now have an even number of symbols (thus the $S_{even}).
+                Think of the labels such that $S_{odd}$ means we have an odd length currently, thus we can only add $\epsilon$ of one symbol, which then means we now have an even number of symbols (thus the $S_{even}$).
             \item
                 \[
                     S \rightarrow \epsilon | 0 | 1 | 0S0 | 1S1
@@ -182,10 +192,23 @@
                 The grammar continues recursively forever.
                 Never reaching only terminals, thus never reaching an accept state.
             \item
-%                TODO:
-                \[
+                \begin{lstlisting}
+                    S ->   X$C$X | C$X | X$C | C
+                    C ->   1C1 | 0C0 | $ | $X$
+                    X ->   $X | 1X | 0X | epsilon
+                \end{lstlisting}
 
-                \]
+                The idea for this grammar is that $C$ always builds a palindrome.
+                Note how from $C$, we either recursively wrap $C$ with $0$ or $1$.
+                After which, we can leave $\$$ in the center.
+
+                From the first step, if there are any symbols to the left or right of $C$, we delimite it with a $\$$.
+                This keeps the grammar matching the language.
+
+                This produces the language when $i = n$ and $j = n+1$, however does not account for $i = n$ and $j = n + t$ where $t > 1$.
+                So, notice $C \rightarrow \$X\$$.
+                This allows the palindrome we were building to have non-palindrome-like items in the middle of this palindrome.
+                Notice though, that these symbols are delimited by $\$$ so that we keep separate the palindrome from earlier.
         \end{enumerate}
     \item % 4
         \begin{enumerate}
