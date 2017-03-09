@@ -8,7 +8,9 @@
 % graphs
 \usepackage{tikz}
 \usepackage{forest}
-\usetikzlibrary{shadows,arrows.meta}
+\usetikzlibrary{automata,positioning,shadows,arrows.meta}
+
+\tikzset{initial text={}}
 
 % grammars
 \usepackage{listings}
@@ -162,32 +164,32 @@
     \item % 3
         \begin{enumerate}
             \item
-                \[
-                    S \rightarrow 0 | 1 | 0T0 | 1T1
-                    T \rightarrow \epsilon | 1T | 0T
-                \]
+                \begin{lstlisting}
+                    S -> 0 | 1 | 0T0 | 1T1
+                    T -> epsilon | 1T | 0T
+                \end{lstlisting}
 
                 Trivially $0$ and $1$ match.
                 $0T0$ $1T1$ ensure that the first and last symbol are the same before moving past $S$ into $T$.
-                $T$ simply allows you to add any symbols $\in \Sigma_{\epsilon}$ recursively within the string obtained above.
+                $T$ simply allows you to add any symbols $\in \Sigma_{epsilon}$ recursively within the string obtained above.
             \item
-                \[
-                    S_0 \rightarrow 0 | 1 | 0S_{odd} | 1S_{odd}
-                    S_{odd} \rightarrow \epsilon | 0S_{even} | 1S_{even}
-                    S_{even} \rightarrow 0 | 1 | 0S_{odd} | 1S_{odd}
-                \]
+                \begin{lstlisting}
+                    S_0 -> 0 | 1 | 0S_{odd} | 1S_{odd}
+                    S_{odd} -> epsilon | 0S_{even} | 1S_{even}
+                    S_{even} -> 0 | 1 | 0S_{odd} | 1S_{odd}
+                \end{lstlisting}
 
-                Think of the labels such that $S_{odd}$ means we have an odd length currently, thus we can only add $\epsilon$ of one symbol, which then means we now have an even number of symbols (thus the $S_{even}$).
+                Think of the labels such that $S_{odd}$ means we have an odd length currently, thus we can only add $epsilon$ of one symbol, which then means we now have an even number of symbols (thus the $S_{even}$).
             \item
-                \[
-                    S \rightarrow \epsilon | 0 | 1 | 0S0 | 1S1
-                \]
+                \begin{lstlisting}
+                    S -> epsilon | 0 | 1 | 0S0 | 1S1
+                \end{lstlisting}
 
                 Unlike $a$, the only variable is $S$, this is because each time we recurse, we want to ensure whatever the sub-string contains, it always begins and ends with the same symbol, thus maintaining the palindrome.
             \item
-                \[
-                    S \rightarrow S
-                \]
+                \begin{lstlisting}
+                    S -> S
+                \end{lstlisting}
 
                 The grammar continues recursively forever.
                 Never reaching only terminals, thus never reaching an accept state.
@@ -213,6 +215,47 @@
     \item % 4
         \begin{enumerate}
             \item
+                \begin{tikzpicture}
+                   \node[state,initial] (q_0)   {$q_0$};
+                   \node[state] (q_1) [right=2cm of q_0] {$q_1$};
+                   \node[state] (q_2) [above right=of q_1] {$q_2$};
+                   \node[state] (q_3) [right=2cm of q_2] {$q_3$};
+                   \node[state,accepting] (q_4) [right=2cm of q_3] {$q_4$};
+                   \node[state] (q_5) [below right=of q_1] {$q_5$};
+                   \node[state] (q_6) [right=2cm of q_5] {$q_6$};
+                   \node[state,accepting] (q_7) [right=2cm of q_6] {$q_7$};
+                    \path[->]
+                    (q_0) edge [above] node {$\epsilon,\epsilon\rightarrow\$$} (q_1)
+                    (q_1) edge [above left] node {$1,\epsilon\rightarrow1$} (q_2)
+                          edge [below left] node {$0,\epsilon\rightarrow0$} (q_5)
+                    (q_2) edge [above] node {$1,1\rightarrow\epsilon$} (q_3)
+                          edge [loop above,align=left] node {$1,\epsilon\rightarrow\epsilon$ \\ $0,\epsilon\rightarrow\epsilon$} (q_2)
+                    (q_3) edge [above] node {$\epsilon,\$\rightarrow\epsilon$} (q_4)
+                    (q_5) edge [above] node {$0,0\rightarrow\epsilon$} (q_6)
+                          edge [loop above,align=left] node {$1,\epsilon\rightarrow\epsilon$ \\ $0,\epsilon\rightarrow\epsilon$} (q_5)
+                    (q_6) edge [above] node {$\epsilon,\$\rightarrow\epsilon$} (q_7)
+                    ;
+                \end{tikzpicture}
+
+                Notice however, this solution does not require a stack.
+                The language could be modeled easily by an NFA with two branches as seen above.
+
+                Instead, a PDA where the stack is required, can be modeled as such:
+
+                \begin{tikzpicture}
+                   \node[state,initial] (q_0)   {$q_0$};
+                   \node[state] (q_1) [right=2cm of q_0] {$q_1$};
+                   \node[state] (q_2) [right=2cm of q_1] {$q_2$};
+                   \node[state] (q_3) [right=2cm of q_2] {$q_3$};
+                   \node[state,accepting] (q_4) [right=2cm of q_3] {$q_4$};
+                    \path[->]
+                    (q_0) edge [above] node {$\epsilon,\epsilon\rightarrow\$$} (q_1)
+                    (q_1) edge [above,align=left] node {$1,\epsilon\rightarrow1$ \\ $0,\epsilon\rightarrow0$} (q_2)
+                    (q_2) edge [above,align=left] node {$1,1\rightarrow\epsilon$ \\ $0,0\rightarrow\epsilon$} (q_3)
+                    	  edge [loop above,align=left] node {$1,\epsilon\rightarrow\epsilon$ \\ $0,\epsilon\rightarrow\epsilon$} (q_2)
+                    (q_3) edge [above] node {$\epsilon,\$\rightarrow\epsilon$} (q_4)
+					;
+                \end{tikzpicture}
             \item
             \item
             \item
