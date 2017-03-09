@@ -257,8 +257,79 @@
 					;
                 \end{tikzpicture}
             \item
+                \begin{tikzpicture}
+                   \node[state,initial] (q_0)   {$q_0$};
+                   \node[state] (q_1) [right=2cm of q_0] {$q_1$};
+                   \node[state] (q_2) [right=2cm of q_1] {$q_{even}$};
+                   \node[state] (q_3) [right=2cm of q_2] {$q_{odd}$};
+                   \node[state,accepting] (q_4) [right=2cm of q_3] {$q_{accept}$};
+                    \path[->]
+                    (q_0) edge [above] node {$\epsilon,\epsilon\rightarrow\$$} (q_1)
+                    (q_1) edge [above] node {$\epsilon,\epsilon\rightarrow\epsilon$} (q_2)
+                          edge [loop above, align=left] node {$1,\epsilon\rightarrow1$ \\ $0,\epsilon\rightarrow0$} (q_2)
+                    (q_2) edge [bend left=20, above, align=left] node {$\epsilon,1\rightarrow\epsilon$ \\ $\epsilon,0\rightarrow\epsilon$} (q_3)
+                    (q_3) edge [above] node {$\epsilon,\$\rightarrow\epsilon$} (q_4)
+                          edge [bend left=20, below, align=left] node {$\epsilon,1\rightarrow\epsilon$ \\ $\epsilon,0\rightarrow\epsilon$} (q_2)
+                    ;
+                \end{tikzpicture}
+
+                The idea here is we begin by placeing $\$$ on the stack.
+                We then loop through the entire string in state $q_1$ and place each symbol in the stack.
+                From this state, notice the only transitions are $\epsilon,x\rightarrow\epsilon$ where $x \in \Sigma_{\epsilon}$.
+                This means we must have read all input here in $q_1$.
+                Otherwise we the PDA will not have read all the input, and thus would fail.
+                This also means we only care about the contents of the stack.
+
+                We loop back and forth between $q_{even}$ and $q_{odd}$ after each element $x \in \Sigma$ is popped off the stack.
+                This continues until the stack only contains $\$$.
+                At this point, if we are in $q_{odd}$, this means we have popped an odd number of symbols off the stack, thus the string contained an odd number of symbols.
+
+                As a note, it seems it would be relatively simple to build this logic as a normal NFA, without the use of a stack.
             \item
+                \begin{tikzpicture}
+                   \node[state,initial] (q_0)   {$q_0$};
+                   \node[state] (q_1) [right=2cm of q_0] {$q_1$};
+                   \node[state] (q_2) [right=2cm of q_1] {$q_2$};
+                   \node[state,accepting] (q_3) [right=2cm of q_2] {$q_3$};
+                    \path[->]
+                    (q_0) edge [above] node {$\epsilon,\epsilon\rightarrow\$$} (q_1)
+                    (q_1) edge [above, align=left] node {
+                          	$1,\epsilon\rightarrow\epsilon$ \\
+                            $0,\epsilon\rightarrow\epsilon$ \\
+                          	$\epsilon,\epsilon\rightarrow\epsilon$ \\
+                          } (q_2)
+                          edge [loop above, align=left] node {
+                          	$1,\epsilon\rightarrow1$ \\
+                            $0,\epsilon\rightarrow0$ \\
+                          } (q_1)
+                    (q_2) edge [above] node {$\epsilon,\$\rightarrow\epsilon$} (q_3)
+                    	  edge [loop above, align=left] node {
+                          	$1,1\rightarrow\epsilon$ \\
+                            $0,0\rightarrow\epsilon$ \\
+                          } (q_3)
+                    ;
+                \end{tikzpicture}
+
+                Begin by adding $\$$ to the stack.
+                Then the PDA reads some number of symbols onto the stack on $q_1$.
+                The transition from $q_1$ to $q_2$ has a few options.
+                We begin by observing $\epsilon,\epsilon\rightarrow\epsilon$.
+
+                After this transition, we match each following symbol of the string to what has already been placed onto the stack.
+                This matches palindromes because the stack is last in first out.
+
+                Notice however, this only matches palindromes that are an even number of characters long.
+                Odd length palindromes would have the center symbol placed on the stack, but would not match with the symbols on the right hand side.
+
+                The other options in the transition from $q_1$ to $q_2$ allows a single symbol to be read and removed.
+                The symbol does not effect the stack at all.
+                This allows odd length palindromes.
             \item
+                \begin{tikzpicture}
+                   \node[state,initial] (q_0)   {$q_0$};
+                \end{tikzpicture}
+
+                There don't need to be any transitions, nor any accept states because nothing should ever be accepted.
         \end{enumerate}
     \item % 5
 \end{enumerate}
