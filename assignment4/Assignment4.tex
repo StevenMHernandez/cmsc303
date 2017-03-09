@@ -159,6 +159,25 @@
     \item % 2
         \begin{enumerate}
             \item
+                Using languages $A = \set{a^mb^nc^n | m,n \ge 0}$ and $B = \set{a^nb^nc^m | m,n \ge 0}$, so the class of context-free languages are not closed under intersection.
+
+                Suppose the opposite, that context-free languages are in fact closed under intersection.
+                This would imply that $A \cap B$ must be a context-free language.
+                But what would this mean?
+
+                This new language could be written $C = A \cap B = \set{a^nb^nc^n | m,n \ge 0}$.
+                Notice we now have 3 sections which each must be of the same size.
+                The previous languages $A$ and $B$ were easily handled by the stack approach of a PDA.
+                For $B$, simply place each symbol of $a^n$ into the stack.
+                For $b$, as each symbol is read from the input, simply pop off an equal number of symbols from the stack.
+                This is similar for $A$.
+
+                Notice however, both $A$ and $B$ only need to compare the length of two sections.
+                The third section does not matter.
+
+                Because a PDA only has one stack, as we read each letter for $b$ in $C$ (after having read in all $a$ to the stack) we are throwing the letter away and popping $a$ from the stack.
+                After handling both $a$ and $b$, we no longer have any way of knowing the size of $n$ because the stack no longer contains that information.
+                Thus $C$ is not a context-free language and as such context-free languages are not closed under intersection.
             \item
         \end{enumerate}
     \item % 3
