@@ -7,7 +7,7 @@
 
 % graphs
 \usepackage{tikz}
-\usepackage{forest}
+\usepackage[edges,linguistics]{forest}
 \usetikzlibrary{automata,positioning,shadows,arrows.meta}
 
 \tikzset{initial text={}}
@@ -63,6 +63,8 @@
 \maketitle
 \vspace{-10mm}
 
+Note: question 2.a uses http://www.cs.ucsb.edu/~cappello/136/lectures/17cfls/slides.pdf as a resource.
+
 \begin{enumerate}
     \item % 1
         \begin{enumerate}
@@ -78,12 +80,19 @@
                 \end{forest}
             \item
                 \begin{forest}
+                    where n children=0{
+                       tier=word,
+                    }{
+                       inner xsep=0pt,
+                    },
                     for tree={
-                        if n children=0{
-                            font=\itshape,
-                            tier=terminal,
-                        }{},
-                    }
+                       if n children=0{
+                           font=\itshape,
+                           tier=terminal,
+                       }{},
+                       fit=band,
+                    },
+                    forked edges,
                     [E
                         [E
                             [E
@@ -110,13 +119,19 @@
                 \end{forest}
             \item
                 \begin{forest}
+                    where n children=0{
+                       tier=word,
+                    }{
+                       inner xsep=0pt,
+                    },
                     for tree={
-                        if n children=0{
-                            font=\itshape,
-                            tier=terminal,
-                        }{},
-                        base=b
-                    }
+                       if n children=0{
+                           font=\itshape,
+                           tier=terminal,
+                       }{},
+                       fit=band,
+                    },
+                    forked edges,
                     [E
                         [T
                             [T
@@ -179,6 +194,11 @@
                 After handling both $a$ and $b$, we no longer have any way of knowing the size of $n$ because the stack no longer contains that information.
                 Thus $C$ is not a context-free language and as such context-free languages are not closed under intersection.
             \item
+                Show the set of context-free languages are not closed under complement.
+
+                Proof: We use DeMorgan's law: $\overline{(A \cup B)} = \overline{A} \cap \overline{B}$ which can be rewritten: $(A \cap B) = \overline{\overline{A} \cup \overline{B}}$ where $A$ and $B$ are context-free languages.
+
+                Assume the complement of a context-free language is also a context-free grammar. Then using DeMorgan's Law above, we see this implies that the intersection of two context-free languages $A \cap B$ is closed, which we showed is not true in question 2.a. Thus, contradiction.
         \end{enumerate}
     \item % 3
         \begin{enumerate}
@@ -351,6 +371,45 @@
                 There don't need to be any transitions, nor any accept states because nothing should ever be accepted.
         \end{enumerate}
     \item % 5
+         $\Sigma: \set{2, +, \times, \left(, \right)}$ \\
+                $\Gamma: \Sigma \cup \set{E, T, F}$
+
+                \begin{tikzpicture}
+                      \node[state,initial] (q_0)   {$q_{start}$};
+                      \node[state] (q_1) [below=2cm of q_0] {$q_1$};
+                      \node[state] (q_loop) [below=2cm of q_1] {$q_{loop}$};
+                      \node[state,accepting] (q_accept) [below=3cm of q_loop] {$q_{accept}$};
+                      \node[state] (q_a) [right =2cm of q_1] {$q_a$};
+                      \node[state] (q_b) [right=2cm of q_a] {$q_b$};
+                      \node[state] (q_c) [below=2cm of q_a] {$q_c$};
+                      \node[state] (q_d) [right=2cm of q_c] {$q_d$};
+                      \node[state] (q_e) [below=2cm of q_c] {$q_e$};
+                      \node[state] (q_f) [right=2cm of q_e] {$q_f$};
+                      \path[->]
+                            (q_0) edge [left] node {$\epsilon,\epsilon\rightarrow\$$} (q_1)
+                            (q_1) edge [left] node {$\epsilon,\epsilon\rightarrow E$} (q_loop)
+                            (q_loop) edge [left] node {$\epsilon,\$\rightarrow\epsilon$} (q_accept)
+                            (q_loop) edge [bend left=30, right] node {$\epsilon,E \rightarrow T$} (q_a)
+                                     edge [above] node {$\epsilon,T \rightarrow F$} (q_c)
+                                     edge [bend right=30, right] node {$\epsilon,F \rightarrow )$} (q_e)
+                                     edge [loop left, align=left, distance=2cm] node {
+                                        $\epsilon, E \rightarrow T$ \\
+                                        $\epsilon, T \rightarrow F$ \\
+                                        $\epsilon, F \rightarrow 2$ \\
+                                        $( , ( \rightarrow\epsilon$ \\
+                                        $) ,) \rightarrow\epsilon$ \\
+                                        $+,+ \rightarrow\epsilon$ \\
+                                        $\times,\times \rightarrow\epsilon$ \\
+                                        $2,2 \rightarrow\epsilon$ \\
+                                     } (q_loop)
+                             (q_a) edge [above] node {$\epsilon,\epsilon\rightarrow +$} (q_b)
+                             (q_b) edge [bend right=230, in=200, right] node {$\epsilon,\epsilon\rightarrow E$} (q_loop)
+                             (q_c) edge [above] node {$\epsilon,\epsilon\rightarrow \times$} (q_d)
+                             (q_d) edge [bend left=150, in=170, below] node {$\epsilon,\epsilon\rightarrow F$} (q_loop)
+                             (q_e) edge [below] node {$\epsilon,\epsilon\rightarrow 2$} (q_f)
+                             (q_f) edge [bend left=230, in=170, below] node {$\epsilon,\epsilon \rightarrow ($} (q_loop)
+                        ;
+                \end{tikzpicture}
 \end{enumerate}
 
 \end{document}
