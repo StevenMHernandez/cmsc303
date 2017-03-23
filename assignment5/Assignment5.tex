@@ -1,0 +1,154 @@
+\documentclass{article}
+\usepackage{amsmath,amsthm}
+\usepackage{amssymb,latexsym}
+\usepackage{float}
+\usepackage{fullpage}
+\usepackage{times}
+
+% graphs
+\usepackage{tikz}
+\usepackage[edges,linguistics]{forest}
+\usetikzlibrary{automata,positioning,shadows,arrows.meta}
+
+\tikzset{initial text={}}
+
+% grammars
+\usepackage{listings}
+
+\lstset{
+  basicstyle=\itshape,
+  xleftmargin=3em,
+  literate={->}{$\rightarrow$}{2}
+           {epsilon}{$\epsilon$}{1}
+}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{question}[theorem]{Question}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{observation}[theorem]{Observation}
+\newtheorem{proposition}{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{fact}[theorem]{Fact}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{example}{Example}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{alg}[theorem]{Algorithm}
+
+\newcommand{\set}[1]{{\left\{#1\right\}}}    % braces for set notation
+\newcommand{\ve}[1]{\mathbf{#1}}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\complex}{{\mathbb C}}
+\newcommand{\reals}{{\mathbb R}}
+\newcommand{\ints}{{\mathbb Z}}
+\newcommand{\nats}{{\mathbb N}}
+\newcommand{\proj}[1]{\mbox{$|#1\rangle \!\langle #1 |$}}
+\newcommand{\enc}[1]{\left<#1\right>}
+\newcommand{\spa}[1]{\mathcal{#1}}
+\newcommand{\ayes}{A_{\rm yes}}
+\newcommand{\ano}{A_{\rm no}}
+
+\begin{document}
+
+\title{
+    CMSC 303 Introduction to Theory of Computation, VCU\\
+    Assignment: 5\\
+    Name: Steven Hernandez
+}
+
+\date{}
+
+\maketitle
+\vspace{-10mm}
+
+\begin{enumerate}
+    \item % 1
+        \begin{enumerate}
+            \item
+                Configuration of a Turing Machine consists of
+
+                \begin{enumerate}
+                    \item
+                        State
+                    \item
+                        Head position
+                    \item
+                        Tape contents
+                \end{enumerate}
+            \item
+                Yes, a turing machine can write anything that is in the tape's alphabet $\Gamma$.
+            \item
+                $\Gamma$ can $ = \Sigma$, however this may cause ambiguity.
+                A blank space usually indicates the end of the string, but if \textvisiblespace $\in \Sigma$, there is no knowing for certain the character indicates the end of the string.
+            \item
+                It depends on how a turing machine is defined.
+                By our definition, a step for the turing machine either moves the head left or right.
+                The head cannot remain in place.
+
+                However, a turing machine can be defined to allow a step to move the left, right or stay in place.
+                This new definition of a turing machine is equal in power to the previous turing machine.
+                This is because we can simply take any steps that say to stay in place and separate them into two steps:
+                move left, then move right.
+                This effectively keeps the head in place.
+            \item
+                By our definition the turing machine's set of states $Q = \set{q_{accept}, q_{reject}}$.
+
+                It could be the case that the turing machine will never halt in one of those two states, but still the state is still present in $Q$.
+            \item
+                % TODO:
+        \end{enumerate}
+    \item % 2
+        $L = \set{x | x \text{ contains twice as many 0s as 1s}}$.
+
+        $M = $ "On input string w:
+
+        \begin{enumerate}
+            \item
+                Starting from the left, move towards the end of the input to ensure there are an even number of zeros, if not, reject.
+            \item
+                Return to the left, scan right until the first uncrossed zero. Cross it off.
+            \item
+                Continue right until the next zero. Cross it off as well.
+            \item
+                Move all the way to the right most symbol in the input.
+            \item
+                Scan left until a non-crossed-off one is found. If no one is found, reject.
+                Otherwise, cross off the one and return the head to the left.
+            \item
+                Repeat the second step until no zeros are found.
+            \item
+                Once scanning from left to right finds no zeros, check to see if there are any uncrossed ones.
+                If there are, reject. Otherwise, accept.
+        \end{enumerate}
+    \item % 3
+        \begin{enumerate}
+            \item
+                First, we determine what sort of differences there are between the two models.
+
+                \begin{enumerate}
+                    \item
+                        If the head of our turing machine is on the first symbol of the tape and then is instructed to move left, the head stays in place.
+                        Alternatively, the doubly infinite tape will successfully move left.
+                \end{enumerate}
+
+                To simulate this feature of our standard Turing Machine, we simply add a few conditions to our new TM.
+                We begin our turing machine by marking the first symbol in some unique way so as to identify it as our initial position.
+                Then we add the condition that if we try to move left but we read this unique identifying mark, we instead remain in place (or move left, then automatically move right).
+            \item
+                Not caring about any efficiency, we again mark our first place on the tape with a unique identifier. (Note this does not remove our turing machines ability to read the symbol below the mark).
+                Then, whenever we try to move left when we see this unique identifying mark, we shift all the contents of the tape over to the left once.
+                After shifting, we remove the unique identifying mark and place it on the new first space on the tape (which we will assume would be filled with a blank space symbol).
+            \item
+                Because the models can both recreate the mechanisms of one another, this means both are able to recognize the same set of languages.
+        \end{enumerate}
+    \item % 4
+        \begin{enumerate}
+            \item
+            \item
+        \end{enumerate}
+    \item % 5
+\end{enumerate}
+
+\end{document}
