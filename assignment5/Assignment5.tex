@@ -149,6 +149,36 @@
             \item
         \end{enumerate}
     \item % 5
+        Understanding a 1-PDA can recognize context-free languages, and knowing $L = \set{a^nb^nc^n | n \ge 0}$. We can simply show that a 2-PDA is more powerful, because it can recognize $L$.
+
+        Beforehand though, we can understand that a 2-PDA is at least equivelant to a 1-PDA, because while the 2-PDA has two stacks, we can leave a stack alone during some computation and we it can effectively be used as a 1-PDA.
+
+        To show $L$ is recognized by a 2-PDA.
+
+        We can do this with a state diagram as seen below.
+        Remember, a 1-PDA's transitions are labeled $x, y \rightarrow z$ where $x$ is the symbol read from the input, $y$ is the symbol popped off the stack and $z$ is the symbol pushed onto the stack.
+
+        For our 2-PDA, we label transitions: $x,y_1,y_2\rightarrow z_1,z_2$ where $x$ again is the symbol read from the input.
+        $y_n$ is popped from stack $n$. $z_n$ is pushed onto stack $n$.
+
+        \begin{tikzpicture}
+           \node[state,initial] (q_0)   {$q_0$};
+           \node[state] (q_1) [right=2cm of q_0] {$q_1$};
+           \node[state] (q_2) [right=2cm of q_1] {$q_2$};
+           \node[state] (q_3) [right=2cm of q_2] {$q_3$};
+           \node[state,accepting] (q_4) [right=2cm of q_3] {$q_4$};
+            \path[->]
+            (q_0) edge [above] node {$\epsilon,\epsilon,\epsilon\rightarrow\$,\$$} (q_1)
+            (q_1) edge [above] node {$\epsilon, \epsilon, \epsilon \rightarrow \epsilon, \epsilon$} (q_2)
+                  edge [loop above] node {$a, \epsilon, \epsilon \rightarrow a, \epsilon$} (q_1)
+            (q_2) edge [above] node {$\epsilon, \epsilon, \epsilon \rightarrow \epsilon, \epsilon$} (q_3)
+                  edge [loop above] node {$b, \epsilon, \epsilon \rightarrow \epsilon, b$} (q_2)
+            (q_3) edge [above] node {$\epsilon, \$, \$ \rightarrow \epsilon, \epsilon$} (q_4)
+                  edge [loop above] node {$c, a, b \rightarrow \epsilon, \epsilon$} (q_3)
+            ;
+        \end{tikzpicture}
+
+        Thus, a 2-PDA can recognize at least on additional language, thus a 2-PDA is more powerful than a 1-PDA.
 \end{enumerate}
 
 \end{document}
