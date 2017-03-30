@@ -97,7 +97,9 @@
 
                 It could be the case that the turing machine will never halt in one of those two states, but still the state is still present in $Q$.
             \item
-                % TODO:
+                A decidable language, when put into a Turing Machine will halt in either a rejecting or accepting state after some finite number of steps.
+
+                On the other hand, a Turing-recognizable language can either reject, accept or loop for an unknown and possibly infinite sequence.
         \end{enumerate}
     \item % 2
         $L = \set{x | x \text{ contains twice as many 0s as 1s}}$.
@@ -146,7 +148,18 @@
     \item % 4
         \begin{enumerate}
             \item
+                Use the fact that when decidable languages are defined with a Turing machine, the turing machine is gauranteed to halt, either accepting or rejecting by the definition of decidablity.
+                Because of this, if we have some Turing Maching $M_1$ which recognizes the decidable language $L_1$ and a second Turing Maching $M_2$ which recognizes the decidable language $L_2$, we can show that $M_1 \circ M_2$ is also decidable.
+                We simply apply the same steps from both $M_1$ and $M_2$.
+                We begin with the rules $M_1$ and once our Turing Machine reaches the accepting state for $M_1$, then we begin looking at the rules for $M_2$.
+                From here, we follow the rules for $M_2$ until we reach the accepting state for $M_2$.
+                Obviously, if we were to have reached a rejecting state in either $M_1$ or $M_2$, then we would also enter a rejecting state for this new Turing Machine as well.
             \item
+                For this, we develop a new Nondeterministic Turing Machine $M_N$.
+                This NTM will attempt will run through the input string $x = yz$ where $y$ is recognized by the first Turing Machine and $z$ is recognized by the second.
+                Before each character is read, our NTM will create two branches of computation such that the first branch assumes that $y$ is complete and $z$ will begin immediately upon reading the next character.
+                The second branch will assume that $y$ is not yet complete, and will continue reading symbols from the input and repeat the branching behaviour before the next character is read.
+                Because we are checking if $y$ is recognized by the first TM and $z$ by the second for all possible compbinations of $yz$, if any of the possible branches find both $y$ and $z$ accept, then the whole machine should accept as well.
         \end{enumerate}
     \item % 5
         Understanding a 1-PDA can recognize context-free languages, and knowing $L = \set{a^nb^nc^n | n \ge 0}$. We can simply show that a 2-PDA is more powerful, because it can recognize $L$.
