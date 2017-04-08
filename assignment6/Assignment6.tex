@@ -1,0 +1,127 @@
+\documentclass{article}
+\usepackage{amsmath,amsthm}
+\usepackage{amssymb,latexsym}
+\usepackage{float}
+\usepackage{fullpage}
+\usepackage{times}
+
+% graphs
+\usepackage{tikz}
+\usepackage[edges,linguistics]{forest}
+\usetikzlibrary{automata,positioning,shadows,arrows.meta}
+
+\tikzset{initial text={}}
+
+% grammars
+\usepackage{listings}
+
+\lstset{
+  basicstyle=\itshape,
+  xleftmargin=3em,
+  literate={->}{$\rightarrow$}{2}
+           {epsilon}{$\epsilon$}{1}
+}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{question}[theorem]{Question}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{observation}[theorem]{Observation}
+\newtheorem{proposition}{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{fact}[theorem]{Fact}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{example}{Example}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{alg}[theorem]{Algorithm}
+
+\newcommand{\set}[1]{{\left\{#1\right\}}}    % braces for set notation
+\newcommand{\ve}[1]{\mathbf{#1}}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\complex}{{\mathbb C}}
+\newcommand{\reals}{{\mathbb R}}
+\newcommand{\ints}{{\mathbb Z}}
+\newcommand{\nats}{{\mathbb N}}
+\newcommand{\proj}[1]{\mbox{$|#1\rangle \!\langle #1 |$}}
+\newcommand{\enc}[1]{\left<#1\right>}
+\newcommand{\spa}[1]{\mathcal{#1}}
+\newcommand{\ayes}{A_{\rm yes}}
+\newcommand{\ano}{A_{\rm no}}
+
+\begin{document}
+
+\title{
+    CMSC 303 Introduction to Theory of Computation, VCU\\
+    Assignment: 6\\
+    Name: Steven Hernandez
+}
+
+\date{}
+
+\maketitle
+\vspace{-10mm}
+
+\begin{enumerate}
+    \item % 1
+        \begin{enumerate}
+            \item
+                Claim: $|N| = |Z|$ where $N = \set{0,1,2,3,\ldots}$ and $Z = \set{\ldots,-3,-2,-1,0,1,2,3,\ldots}$.
+
+                Proof: By bijection, we create a function $f: N \mapsto Z$ such that all even numbers in $N$ map into a some even number in $Z$ and odd numbers in $N$ map to negative numbers in $Z$.
+
+                \[ f(x) = \begin{cases}
+                  -\dfrac{x+1}{2}    & \text{if $x$ is odd}     \\
+                  \dfrac{x}{2}       & \text{if $x$ is even}
+               	\end{cases}
+                \]
+            \item
+        \end{enumerate}
+        	Claim: $|N| \neq |B|$ where $B = \set{x | x \in \set{0,1}^*}$
+
+            Proof: We can prove this by by contradiction.
+
+            Suppose we only only concern ourselves with very the large (infinite) strings.
+            We assume $\exists$ list $L$ of all thes strings.
+
+            \begin{equation}
+            	\begin{split}
+            		L = & 011001100\ldots \\
+                		& 100110011\ldots \\
+                		& 100100100\ldots \\
+                		& 111111111\ldots \\
+                        & \ldots\ldots\ldots
+                \end{split}
+			\end{equation}
+
+            We can construct the string $x \in B$ which is not in $L$ by taking the $i$th symbol of x to be the opposite symbol from the $i$th entry of $L$. Thus, contradiction.
+    \item % 2
+        \begin{enumerate}
+            \item
+            	$A \leq B$ means that $B$ is harder than $A$ (or equally hard).
+            \item
+            	A mapping reduction gives us a way to handle deciding whether a problem is decidable or not from knowing that some other problem is decidable or not.
+
+                So for example with an example of adding and multiplying.
+                Multiplying $\leq$ adding because multiplying can be achieved by simply using adding. Thus, adding is a more powerful construct.
+
+                With this, we can say that if $A$ is not decidable, $B$ is not decidable either because $B$ is harder than $A$. As well as, if $B$ is decidable, $A$ is also decidable, because $A$ is not as hard as $B$.
+            \item
+
+            \item
+              \begin{enumerate}
+                  \item $A$ is decidable because $B$ is `harder`, yet is decidable.
+                  \item $B$ is undecidable because $B$ is `harder` than $A$ and $A$ is not decidable.
+                  \item It is unknown whether $A$ is decidable or not, because while $B$ is not decidable, it is also said to be harder than $A$.
+              \end{enumerate}
+        \end{enumerate}
+    \item % 3
+        \begin{enumerate}
+            \item
+            \item
+            \item
+        \end{enumerate}
+\end{enumerate}
+
+\end{document}
