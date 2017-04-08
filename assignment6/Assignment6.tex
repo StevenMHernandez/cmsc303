@@ -1,26 +1,15 @@
+
 \documentclass{article}
 \usepackage{amsmath,amsthm}
 \usepackage{amssymb,latexsym}
+\usepackage{epsfig}
+\usepackage{hyperref}
 \usepackage{float}
 \usepackage{fullpage}
+\usepackage{enumerate}
+\usepackage{paralist}
 \usepackage{times}
 
-% graphs
-\usepackage{tikz}
-\usepackage[edges,linguistics]{forest}
-\usetikzlibrary{automata,positioning,shadows,arrows.meta}
-
-\tikzset{initial text={}}
-
-% grammars
-\usepackage{listings}
-
-\lstset{
-  basicstyle=\itshape,
-  xleftmargin=3em,
-  literate={->}{$\rightarrow$}{2}
-           {epsilon}{$\epsilon$}{1}
-}
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{corollary}[theorem]{Corollary}
@@ -36,19 +25,44 @@
 \newtheorem{conjecture}[theorem]{Conjecture}
 \newtheorem{alg}[theorem]{Algorithm}
 
+\newcommand{\myparagraph}[1]{\paragraph{#1.}}
+
+\newcommand{\eps}{\varepsilon}
+\newcommand{\epssdp}{\varepsilon_{\rm sdp}}
+
+\newcommand{\C}{C}
+\newcommand{\Tr}{Tr} %CHECK
+\newcommand{\Id}{Id} %CHECK
+\newcommand{\Exs}[2]{E_{#1}[#2]} %CHECK
+
+\newcommand{\beq}{\begin{equation}}
+\newcommand{\eeq}{\end{equation}}
+
+\newcommand{\norm}[1]{\left\|\,#1\,\right\|}       % norm
+\newcommand{\onorm}[1]{\norm{#1}_{\mathrm{1}}}      % Euclidean norm for vectors
+\newcommand{\enorm}[1]{\norm{#1}_{\mathrm{2}}}      % Euclidean norm for vectors
+\newcommand{\trnorm}[1]{\norm{#1}_{\mathrm {tr}}}  % trace norm
+\newcommand{\fnorm}[1]{\norm{#1}_{\mathrm {F}}}    % frobenius norm
+\newcommand{\snorm}[1]{\norm{#1}_{\mathrm {\infty}}}    % spectral norm
+
 \newcommand{\set}[1]{{\left\{#1\right\}}}    % braces for set notation
 \newcommand{\ve}[1]{\mathbf{#1}}
 \newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
-\newcommand{\poly}{\operatorname{poly}}
+
 \newcommand{\complex}{{\mathbb C}}
 \newcommand{\reals}{{\mathbb R}}
 \newcommand{\ints}{{\mathbb Z}}
 \newcommand{\nats}{{\mathbb N}}
+\newcommand{\rats}{{\mathbb Q}}
+
 \newcommand{\proj}[1]{\mbox{$|#1\rangle \!\langle #1 |$}}
 \newcommand{\enc}[1]{\left<#1\right>}
+
 \newcommand{\spa}[1]{\mathcal{#1}}
-\newcommand{\ayes}{A_{\rm yes}}
-\newcommand{\ano}{A_{\rm no}}
+\newcommand{\dens}{D(\spa{A}\otimes\spa{B})}
+\newcommand{\unitaries}{U(\spa{A}\otimes\spa{B})}
+
+\bibliographystyle{alpha}
 
 \begin{document}
 
@@ -59,15 +73,17 @@
 }
 
 \date{}
-
 \maketitle
-\vspace{-10mm}
+
+\vspace{-5mm}
+\noindent Total marks: $59$ marks + $6$ marks bonus for typing your solutions in LaTeX.\vspace{2mm}\\
+
+\noindent Unless otherwise noted, the alphabet for all questions below is assumed to be $\Sigma=\set{0,1}$. This assignment will get you primarily to practice reductions in the context of decidability.
 
 \begin{enumerate}
-    \item % 1
-        \begin{enumerate}
-            \item
-                Claim: $|N| = |Z|$ where $N = \set{0,1,2,3,\ldots}$ and $Z = \set{\ldots,-3,-2,-1,0,1,2,3,\ldots}$.
+    \item {[10 marks]} We begin with some mathematics regarding uncountability. Let $\nats=\set{0, 1,2,3,\ldots}$ denote the set of natural numbers.
+    \begin{enumerate}
+        \item {[5 marks]}  Prove that the set of integers $\ints=\set{\ldots,-3,-2,-1,0,1,2,3\ldots}$ has the same size as $\nats$ by giving a bijection between $\ints$ and $\nats$.
 
                 Proof: By bijection, we create a function $f: N \mapsto Z$ such that all even numbers in $N$ map into a some even number in $Z$ and odd numbers in $N$ map to negative numbers in $Z$.
 
@@ -76,52 +92,68 @@
                   \dfrac{x}{2}       & \text{if $x$ is even}
                	\end{cases}
                 \]
-            \item
-        \end{enumerate}
-        	Claim: $|N| \neq |B|$ where $B = \set{x | x \in \set{0,1}^*}$
 
-            Proof: We can prove this by by contradiction.
+        \item {[5 marks]}  Let $B$ denote the set of all infinite sequences over $\set{0,1}$. Show that $B$ is uncountable using a proof by diagonalization.
 
-            Suppose we only only concern ourselves with very the large (infinite) strings.
-            We assume $\exists$ list $L$ of all thes strings.
+                Proof: We can prove this by contradiction.
 
-            \begin{equation}
-            	\begin{split}
-            		L = & 011001100\ldots \\
-                		& 100110011\ldots \\
-                		& 100100100\ldots \\
-                		& 111111111\ldots \\
-                        & \ldots\ldots\ldots
-                \end{split}
-			\end{equation}
+                Let's begin by only concern ourselves with very the large (infinite) strings.
+                We assume $\exists$ list $L$ of all these strings.
 
-            We can construct the string $x \in B$ which is not in $L$ by taking the $i$th symbol of x to be the opposite symbol from the $i$th entry of $L$. Thus, contradiction.
-    \item % 2
+                \begin{equation}
+                    \begin{split}
+                        L = & 011001100\ldots \\
+                            & 100110011\ldots \\
+                            & 100100100\ldots \\
+                            & 111111111\ldots \\
+                            & \ldots\ldots\ldots
+                    \end{split}
+                \end{equation}
+
+                We can construct a string $x \in B$ which is not in $L$ by taking the $i$th symbol of x to be the opposite symbol from the $i$th entry of $L$. Thus, contradiction.
+
+    \end{enumerate}
+    \item {[9 marks]} We next move to a warmup question regarding reductions.
         \begin{enumerate}
-            \item
-            	$A \leq B$ means that $B$ is harder than $A$ (or equally hard).
-            \item
-            	A mapping reduction gives us a way to handle deciding whether a problem is decidable or not from knowing that some other problem is decidable or not.
+            \item {[2 marks]} Intuitively, what does the notation $A\leq B$ mean for problems $A$ and $B$?
 
-                So for example with an example of adding and multiplying.
-                Multiplying $\leq$ adding because multiplying can be achieved by simply using adding. Thus, adding is a more powerful construct.
+                    $A \leq B$ means that $B$ is harder than $A$ (or equally hard).
 
-                With this, we can say that if $A$ is not decidable, $B$ is not decidable either because $B$ is harder than $A$. As well as, if $B$ is decidable, $A$ is also decidable, because $A$ is not as hard as $B$.
-            \item
+            \item {[2 marks]} What is a mapping reduction $A\leq_m B$ from language $A$ to language $B$? Give both a formal definition, and a brief intuitive explanation in your own words.
 
-            \item
-              \begin{enumerate}
-                  \item $A$ is decidable because $B$ is `harder`, yet is decidable.
-                  \item $B$ is undecidable because $B$ is `harder` than $A$ and $A$ is not decidable.
-                  \item It is unknown whether $A$ is decidable or not, because while $B$ is not decidable, it is also said to be harder than $A$.
-              \end{enumerate}
+                            A mapping reduction gives us a way to handle deciding whether a problem is decidable or not from knowing that some other problem is decidable or not.
+
+                            So for example with an example of adding and multiplying.
+                            Multiplying $\leq$ adding because multiplying can be achieved by simply using adding. Thus, adding is a more powerful construct.
+
+                            With this, we can say that if $A$ is not decidable, $B$ is not decidable either because $B$ is harder than $A$. As well as, if $B$ is decidable, $A$ is also decidable, because $A$ is not as hard as $B$.
+
+            \item {[2 marks]} What is a computable function? Give both a formal definition, and a brief intuitive explanation in your own words.
+            \item {[3 marks]} Suppose $A\leq_m B$ for languages $A$ and $B$. Please answer each of the following with a brief explanation.
+                \begin{enumerate}
+                    \item If $B$ is decidable, is $A$ decidable?
+
+                            $A$ is decidable because $B$ is `harder`, yet is decidable.
+
+
+                    \item If $A$ is undecidable, is $B$ undecidable?
+
+                            $B$ is undecidable because $B$ is `harder` than $A$ and $A$ is not decidable.
+
+                    \item If $B$ is undecidable, is $A$ undecidable?
+
+                            It is unknown whether $A$ is decidable or not, because while $B$ is not decidable, it is also said to be harder than $A$.
+                \end{enumerate}
+
         \end{enumerate}
-    \item % 3
-        \begin{enumerate}
-            \item
-            \item
-            \item
-        \end{enumerate}
-\end{enumerate}
+    \item {[40 marks]} Prove using reductions that the following languages are undecidable.
 
+    \begin{enumerate}
+    \item {[8 marks]} $L=\set{\enc{M}\mid M\text{ is a TM and }L(M)=\Sigma^*}$.
+            \item {[8 marks]} $L=\set{\enc{M}\mid M\text{ is a TM and }\set{000,111}\subseteq L(M)}$.
+            \item {[8 marks]} $L=\set{\enc{M}\mid M\text{ is a TM which accepts all strings of even parity}}$. (Recall the \emph{parity} of a string $x\in\set{0,1}$ is the number of $1$'s in $x$.)
+        \item {[8 marks]} $L=\set{\enc{M}\mid M\text{ is a TM that accepts }w^R\text{ whenever it accepts }w}$. Recall here that $w^R$ is the string $w$ written in reverse, i.e. $011^R=110$.
+        \item {[8 marks]} Consider the problem of determining whether a TM M on an input $w$ ever attempts to move its head left when its head is on the left-most tape cell. Formulate this problem as a language and show that it is undecidable.
+    \end{enumerate}
+ \end{enumerate}
 \end{document}
