@@ -134,6 +134,11 @@
                             With this, we can say that if $A$ is not decidable, $B$ is not decidable either because $B$ is harder than $A$. As well as, if $B$ is decidable, $A$ is also decidable, because $A$ is not as hard as $B$.
 
             \item {[2 marks]} What is a computable function? Give both a formal definition, and a brief intuitive explanation in your own words.
+
+            		A computable function is a function where $\exists$ a TM $T$ where $\forall w \in \Sigma^*$, $T$ halts with only $f(w)$ on its tape.
+
+                    This means that there needs to exist a TM for a function to be a computable function. This somewhat implies potentially there are non-computable function meaning there may exist functions which we cannot compute with any TM.
+
             \item {[3 marks]} Suppose $A\leq_m B$ for languages $A$ and $B$. Please answer each of the following with a brief explanation.
                 \begin{enumerate}
                     \item If $B$ is decidable, is $A$ decidable?
