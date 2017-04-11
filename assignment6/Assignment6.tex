@@ -62,6 +62,9 @@
 \newcommand{\dens}{D(\spa{A}\otimes\spa{B})}
 \newcommand{\unitaries}{U(\spa{A}\otimes\spa{B})}
 
+% tab
+\newcommand\tab[1][1cm]{\hspace*{#1}}
+
 \bibliographystyle{alpha}
 
 \begin{document}
@@ -191,10 +194,23 @@
 
                     If we can construct TM $S$ to decide $A_{TM}$ with $R$, this would be a contradiction.
 
+                    First we create a subprocessed TM $M_x$.
+
                     \begin{equation}
                         \begin{split}
-                           S = "& \text{On input} \enc{M}: \\
-                                &  \\
+                           M_x = "& \text{On input} w: \\
+                                & \text{If $w$ = $000$, accept} \\
+                                & \text{Else, run $M$ on $w$.} \\
+                                & \text{If $M$ accepts, accept, if $M$ rejects, reject.}
+                        \end{split}
+                    \end{equation}
+
+                    \begin{equation}
+                        \begin{split}
+                           S = "& \text{On input} \enc{M,x}: \\
+                                & \text{Construct $M_x$} \\
+                                & \text{Run $R$ on $\enc{M_x}$} \\
+                                & \text{If $R$ accepts, accept, if $R$ rejects, reject.}
                         \end{split}
                     \end{equation}
 
@@ -202,6 +218,34 @@
             \item {[8 marks]} $L=\set{\enc{M}\mid M\text{ is a TM which accepts all strings of even parity}}$. (Recall the \emph{parity} of a string $x\in\set{0,1}$ is the number of $1$'s in $x$.)
 
 
+
+            		Proof: By contradiction. Assume $\exists$ TM $R$ deciding $L$.
+
+                    If we can construct TM $S$ to decide $A_{TM}$ with $R$, this would be a contradiction.
+
+                    First we create a subprocessed TM $M_x$.
+
+                    \begin{equation}
+                        \begin{split}
+                           M_x = "& \text{On input} w: \\
+                                & \text{If $w$ is of the form $((0^*)1(0^*)1(0^*))^*$, accept} \\
+                                & \text{Else, run $M$ on $w$.} \\
+                                & \text{If $M$ accepts, accept, if $M$ rejects, reject.}
+                        \end{split}
+                    \end{equation}
+
+                    By step one, this will accept all inputs with the form $((0^*)1(0^*)1(0^*))^*$ which are all of even parity. In fact, this is ALL string of even parity.
+
+                    \begin{equation}
+                        \begin{split}
+                           S = "& \text{On input} \enc{M,x}: \\
+                                & \text{Construct $M_x$} \\
+                                & \text{Run $R$ on $\enc{M_x}$} \\
+                                & \text{If $R$ accepts, reject, if $R$ rejects, accept.}
+                        \end{split}
+                    \end{equation}
+
+                    If $S$ rejects, this would mean that the $L(M_x) = ((0^*)1(0^*)1(0^*))^*$ (which $R$ accepts), which would mean $M_x$ rejected the input $w$. On the other hand, $S$ would accept if $L(M_x) = ((0^*)1(0^*)1(0^*))^* + \set{w}$, which $R$ rejects, because it was determined that $w$ is not a string of even parity.
 
         	\item {[8 marks]} $L=\set{\enc{M}\mid M\text{ is a TM that accepts }w^R\text{ whenever it accepts }w}$. Recall here that $w^R$ is the string $w$ written in reverse, i.e. $011^R=110$.
 
@@ -235,6 +279,34 @@
                     \end{equation}
 
         	\item {[8 marks]} Consider the problem of determining whether a TM M on an input $w$ ever attempts to move its head left when its head is on the left-most tape cell. Formulate this problem as a language and show that it is undecidable.
+
+            	Using http://cseweb.ucsd.edu/classes/sp06/cse105/homework8.pdf (5.12) as reference:
+
+            		$L=\set{\enc{M}\mid M\text{ is a TM that moves its head left when its head is on the left-most tape cell. }}$
+
+                    Suppose $\exists$ TM $R$ which decides $L$.
+                    If we can construct a TM $S$ which uses $R$ to decide $A_{TM}$, contradication.
+                    We can create a new TM; $Q$, with the same attributes as $M$, with the a few attributes changed.
+
+                    \begin{equation}
+                        \begin{split}
+                           S = "& \text{On input} \enc{M}: \\
+                                & \text{1. Construct TM $Q$ which matches $M$, with the following changes:} \\
+                                & \tab Q = "\text{On input $w$:} \\
+                                & \tab\tab \text{Add steps to the beginning which adds a new tape symbol, we can label $\#$ to the first slot} \\
+                                & \tab\tab \text{Then the TM moves the contents of the tape over one slot to the right.} \\
+                                & \tab\tab \text{(It is important to understand, our first step did not overwrite the content of the first slot.} \\
+                                & \tab\tab \text{ It can be assumed that both steps happen at the same time without losing any tape contents.)} \\
+                                & \tab\tab \text{Additionally, before the TM normally transitions into an accept state, we have the TM} \\
+                                & \tab\tab \text{move to the left until it reaches $\#$.} \\
+                                & \tab\tab \text{Then, move the head left once.} \\
+                                & \tab\tab \text{Also, if the head ever hits $\#$ during normal operation, the TM should perform as if it was the left most cell.} \\
+                                & \text{2. We now run $R$ on $Q$ and return the result.}
+                        \end{split}
+                    \end{equation}
+
+                    Because we removed the possiblity for $M$ to move left when it is on the left most cell in its normal operation by transforming it into $Q$, we know the only reason This would happen is if $M$ accepts, which would be a contradiction for $A_{TM}$.
+
     \end{enumerate}
  \end{enumerate}
 \end{document}
