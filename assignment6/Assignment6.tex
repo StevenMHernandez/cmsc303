@@ -76,6 +76,8 @@
 \maketitle
 
 \vspace{-5mm}
+\noindent 3.d uses http://cseweb.ucsd.edu/classes/sp06/cse105/homework8.pdf as reference
+
 \noindent Total marks: $59$ marks + $6$ marks bonus for typing your solutions in LaTeX.\vspace{2mm}\\
 
 \noindent Unless otherwise noted, the alphabet for all questions below is assumed to be $\Sigma=\set{0,1}$. This assignment will get you primarily to practice reductions in the context of decidability.
@@ -149,11 +151,90 @@
     \item {[40 marks]} Prove using reductions that the following languages are undecidable.
 
     \begin{enumerate}
-    \item {[8 marks]} $L=\set{\enc{M}\mid M\text{ is a TM and }L(M)=\Sigma^*}$.
+    		\item {[8 marks]} $L=\set{\enc{M}\mid M\text{ is a TM and }L(M)=\Sigma^*}$.
+
+            		Proof: By contradiction. Assume $\exists$ TM $R$ deciding $L$.
+
+                    If we can construct TM $S$ to decide $A_{TM}$ with $R$, this would be a contradiction.
+
+                    First, given $\enc{M,x}$, we want to decide if $\enc{M,x} \in A_{TM}$. We will construct a new TM $M_x$ such that
+
+                    If $x \in L(M)$, then $L(M_x) = \Sigma^*$ and \\
+                    if $x \not\in L(M)$, then $L(M_x) \neq \Sigma^*$.
+
+                    \begin{equation}
+                        \begin{split}
+                           M_x = "& \text{On input } t \in L(M): \\
+                                  & \text{if } t = x, accept\\
+                                  & \text{if } t \neq x, \text{run $M$ on $x$ and accept if $M$ does.}"
+                        \end{split}
+                    \end{equation}
+
+                    This means if $M$ accepts, $L(M_x) = \Sigma^*$, and if $M$ does not accept, $L(M_x) = \Sigma^* - \set{x}$ thus $L(M_x) \neq \Sigma^*$.
+
+                    Now we show how if we can create a TM $S$ from $R$ and $M_x$ which decides $A_{TM}$, we will have a contradiction.
+
+                    \begin{equation}
+                        \begin{split}
+                           S = "& \text{On input} \enc{M,x} \text{for} A_{TM}: \\
+                                & \text{construct TM } M_x \\
+                                & \text{Run $R$ on $\enc{M_x}$} \\
+                                & \text{If R accepts, (this means $L(M_x) = \Sigma^*$), accept} \\
+                                & \text{If R rejects, reject.}"
+                        \end{split}
+                    \end{equation}
+
             \item {[8 marks]} $L=\set{\enc{M}\mid M\text{ is a TM and }\set{000,111}\subseteq L(M)}$.
+
+
+            		Proof: By contradiction. Assume $\exists$ TM $R$ deciding $L$.
+
+                    If we can construct TM $S$ to decide $A_{TM}$ with $R$, this would be a contradiction.
+
+                    \begin{equation}
+                        \begin{split}
+                           S = "& \text{On input} \enc{M}: \\
+                                &  \\
+                        \end{split}
+                    \end{equation}
+
+
             \item {[8 marks]} $L=\set{\enc{M}\mid M\text{ is a TM which accepts all strings of even parity}}$. (Recall the \emph{parity} of a string $x\in\set{0,1}$ is the number of $1$'s in $x$.)
-        \item {[8 marks]} $L=\set{\enc{M}\mid M\text{ is a TM that accepts }w^R\text{ whenever it accepts }w}$. Recall here that $w^R$ is the string $w$ written in reverse, i.e. $011^R=110$.
-        \item {[8 marks]} Consider the problem of determining whether a TM M on an input $w$ ever attempts to move its head left when its head is on the left-most tape cell. Formulate this problem as a language and show that it is undecidable.
+
+
+
+        	\item {[8 marks]} $L=\set{\enc{M}\mid M\text{ is a TM that accepts }w^R\text{ whenever it accepts }w}$. Recall here that $w^R$ is the string $w$ written in reverse, i.e. $011^R=110$.
+
+            Using http://cseweb.ucsd.edu/classes/sp06/cse105/homework8.pdf as reference:
+
+            Proof: By contradiction. Assume $\exists$ TM $R$ deciding $L$.
+
+                    If we can construct TM $S$ to decide $A_{TM}$ with $R$, this would be a contradiction.
+
+                    We begin by creating a TM $M_x$ which defined as such:
+
+                    \begin{equation}
+                        \begin{split}
+                           M_x = "& \text{On input} \enc{x}: \\
+                                  & \text{If $x$ is not $01$ or $10$, reject} \\
+                                  & \text{If $x$ is $01$, accept} \\
+                                  & \text{Otherwise $x$ = $01$, so we run $M$ on $w$ and accept if $M$ accepts.} \\
+                        \end{split}
+                    \end{equation}
+
+                    Note for this above machine, we could use any pairs $x$ and $y$ such that $x = y^R$. $L(M_x) = \set{01}$ if $M$ does not accept input $10$ or $L(M_x) = \set{01,10}$ if $M$ does accept input $10$. We can use this to show that building a TM $S$ which uses both $R$ and $M_x$, we would be able to decide $A_{TM}$, a contradiction.
+
+                    \begin{equation}
+                        \begin{split}
+                           S = "& \text{On input} \enc{M,w}: \\
+                                & \text{construct TM } M_x \\
+                                & \text{Run $R$ on $\enc{M_x}$} \\
+                                & \text{If R accepts, accept} \\
+                                & \text{If R rejects, reject.}"
+                        \end{split}
+                    \end{equation}
+
+        	\item {[8 marks]} Consider the problem of determining whether a TM M on an input $w$ ever attempts to move its head left when its head is on the left-most tape cell. Formulate this problem as a language and show that it is undecidable.
     \end{enumerate}
  \end{enumerate}
 \end{document}
