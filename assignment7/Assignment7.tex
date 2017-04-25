@@ -9,6 +9,7 @@
 \usepackage{paralist}
 \usepackage{times}
 \usepackage{algpseudocode}
+\usepackage{color}
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{corollary}[theorem]{Corollary}
@@ -67,6 +68,9 @@
 \newcommand{\klh}{MAX-$k$-local Hamiltonian}
 \newcommand{\lmax}{\lambda_{\operatorname{max}}}
 
+% tab
+\newcommand\tab[1][1cm]{\hspace*{#1}}
+
 \mathchardef\mhyphen="2D
 
 \bibliographystyle{alpha}
@@ -86,6 +90,7 @@
         \item {[4 marks]} Let $f(n)=4n^2-30n+6$. Prove that $f(n)\in O(n^2)$. In your proof, give explicit values for $c$ and $n_0$.
 
         	% 1.a
+            $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
             Proof:
 
             $f(n)=4n^2-30n+6$ \\
@@ -94,9 +99,15 @@
             $= 10n^2$\\
             $\therefore$ if $c = 10$ and $n_0=8$, implies $f(n)=O(n^2)$.
 
+            $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
+
         \item {[4 marks]} Let $f(n)=n^{999}$ and $g(n)=(\sqrt{\log n})^{\sqrt{\log n}}$. Precisely one of the following two claims is true: $f(n)\in O(g(n))$,  $g(n)\in O(f(n))$. Prove whichever one is true. In your proof, give explicit values for $c$ and $n_0$. (Hint: Note that an arbitrary function $f(n)$ can be rewritten as $2^{\log_2(f(n))}$.)
 
         	% 1.b
+            $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
+            $g(n)\in O(f(n))$ where $c=1$ and $n_0 = 2$
+
+            $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
 
         \item {[4 marks]} This question tests an important subtlety in the definition of ``polynomial-time''.
              One of the most famous open problems in classical complexity theory is whether the problem of factoring a given integer $N$ into its prime factors is solvable in polynomial time on a classical computer\footnote{In fact, many popular cryptosystems are based on the assumption that this problem is \emph{not} efficiently solvable. Recall from class, however, that in 1994 it was shown by Peter Shor that \emph{quantum} computers can efficiently solve this problem!}. Given positive integer $N$ as input, why is the following naive approach to the factoring problem not polynomial-time?
@@ -115,12 +126,15 @@
 \end{algorithmic}
 
         	% 1.c
+            $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
             The input to this approach is always a single integer, thus $n = 1$.
             However, the amount of time it takes to process this algorithm is dependant on the value for the input $N$.
             Based on line three, the time complexity of this algorithm increases as the value of $N$ increases.
             This increase is exponential and thus, cannot be done in polynomial time.
 
             Line 7 is a clever, never thought of it that way.
+
+            $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
 
     \end{enumerate}
     \item {[6 marks]}
@@ -129,18 +143,21 @@
             Prove that if $\class{P}=\class{NP}$, then NP is closed under complement, i.e. $\class{NP}=\class{co-NP}$. How can closure of NP under complement hence potentially be used to resolve the P vs NP question?
 
         	% 2
+            $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
             Proof: We understand that if $P = NP$, then our TM $S \in NP$ will complete in polynomial time. Thus, we can build a verifier $V_{co-NP}$ which verifies some input $x \in L$ a Language by simply running the $S$ within $V_{co-NP}$.
-            
+
             \begin{equation}
             	\begin{split}
             		V_{co-NP} = "& \text{On input} \enc{M, x} \\
             				     & \text{1. Simply run $M$ on $x$, reject if $M$ accepts, otherwise accept.}
             	\end{split}
             \end{equation}
-            
+
             Because we know a TM can either $accept$, $reject$ or loop forever, having a verifier $V_{NP}$ to show that a machine will $accept$ and a verifier $V_{co-NP}$ to show that a machine will $reject$ on some input would mean we could infer all three states for the TM.
-            
+
             For example, if $V_{NP}$ accepts and $V_{co-NP}$ rejects on $z$, we know that $z$ is in the language. If $V_{NP}$ rejects and $V_{co-NP}$ accepts, the input is not in the language. However, if $V_{NP}$ rejects and $V_{co-NP}$ rejects, we know that the TM never accepts or rejects and thus, must loop forever.
+
+            $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
 
     \item {[10 marks]} In class, we introduced the language
     \[
@@ -154,26 +171,75 @@
     Here, for graph $G=(V,E)$, an \emph{independent set} $S\subseteq V$ satisfies the property that for any pair of vertices $u,v\in S$, $(u,v)\not\in E$. A \emph{vertex cover} $S\subseteq V$ satisfies the property that for any edge $(u,v)\in E$, at least one of $u$ or $v$ must be in $S$.
     \begin{enumerate}
         \item {[4 marks]} Prove that $\class{CLIQUE}\leq_p\class{INDEPENDENT-SET}$. (Hint: Given a graph $G$, think about its \emph{complement}. Google ``complement graph'' for a definition.)
+
+        	% 3.a
+            $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
+            Proof: Suppose we have $G = (V,E)$ which is the graph we wish to find an independent set of size at least $k$. We construct a graph $G_{inv} = (V,E_{inv})$ where $V$ (of $G$) $= V$ of $G_{inv}$. $E_{inv}$ is build based on the edges $E$ of $G$ in this way:
+
+            $\forall v, w \not\in E$, we add an edge to $E_{inv}$. This will create an inversed graph of $G$ where all nodes which were not connected in $G$ are now connected in $G_{inv}$ and where all nodes were connected in $G$ are not connected in $G_{inv}$.
+
+            Proof of Correctness: $\class{INDEPENDENT-SET}$ is satisfiable if and only if $G_{inv}$ has a clique of at least k.
+
+            Let $x = (x_1, . . . , x_m)$ be a satisfying set of vertexes in $G$ for $\class{INDEPENDENT-SET}$ for size $k$ where $|x| \geq k$. For $\forall y,z \in x$ we know that $(y,z) \not\in E$, thus by our construction above, $(y,z) \in E_{inv}$. Thus now, we know that $G_{inv}$ would have edges between all $y,z \in x$. Therefore $x \in G_{inv}$ is a clique.
+
+         Suppose $G_{inv}$ has a k-clique. Let $x = (x_1, . . . , x_m)$ satisfy $\class{CLIQUE}$. Thus, there must be an edge between each vertices $q,r \in G_{inv}$. By the reverse of the construction above, that means our for $G$ $q,e \not\in G$. Therefore our vertices would be an independent-set.
+
+            $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
+
         \item {[6 marks]} Prove that $\class{INDEPENDENT-SET}\leq_p\class{VERTEX-COVER}$.
 
-        	% 3
+        	% 3.b
+            $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
+
+
+            $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
+
 
     \end{enumerate}
     \item {[8 marks]} Let $CNF_k=\set{\enc{\phi}\mid\phi\text{ is a satisfiable CNF-formula where each variable appears in at most }k\text{ places}}$. Show that ${CNF}_3$ is NP-complete. (Hint: Suppose a variable $x$ appears (say) twice. Replace the first and second occurrences of $x$ with new distinct variables $y_1$ and $y_2$, respectively. Next, add clauses to ensure that $y_1=y_2$. To do this in CNF form, recall that $y_1=y_2$ is logically equivalent to $(y_1\implies y_2)\wedge(y_2\implies y_1)$, and that $(a\implies b)$ can be rewritten as $(a\vee \bar{b})\wedge (\bar{b}\vee {a})$. How can this trick be applied more generally when $x$ appears $m>2$ times?)
 
 
         	% 4
+            $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
+            Proof: First we show that $\phi \in NP$.
+
+            $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
 
     \item {[8 marks]} It is possible for a problem to be NP-hard without actually being in NP itself. For example, the halting problem from class is clearly not in NP, since it is undecidable. However, in this question, you will show that the language $HALT=\set{\enc{M,x}\mid M\text{ is a TM which halts on input }x}$ is NP-hard. Is the halting problem hence NP-complete?
 
 
         	% 5
+            $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
+
+
+            $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
 
     \item {[8 marks]} In class, we have focused on \emph{decision} problems, i.e. deciding whether $x\in L$ or not. For example, given a 3-CNF formula $\phi$, recall that the decision problem 3SAT asks whether $\phi$ is satisfiable or not. In practice, however, we may not just want a YES or NO answer, but also an actual assignment which satisfies $\phi$ whenever $\phi$ is satisfiable. It turns out that in certain settings, being able to solve the \emph{decision} version of the problem (e.g. 3SAT) in polynomial time implies we can also solve the \emph{search} version (e.g. find the satisfying assignment itself) in polynomial time. Problems satisfying this property are called \emph{self-reducible}.
 
 Your task is as follows: Show that 3SAT is self-reducible. In other words, given any 3-CNF formula $\phi$ and a polynomial-time black-box $M$ for determining if $\phi$ is satisfiable, show how to find a satisfying assignment for $\phi$ in polynomial time. You may assume that $M$ is able to decide all CNF formulae with {at most} 3 variables per clause.
 
         	% 6
+            $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
+            Suppose we have a $\class{3SAT}$ with k clauses (eg. $(x_1 \vee \bar{x_2} \vee x_3) \wedge . . .$). We can create a TM $3CNF_{search}$ modeled:
+
+
+            \begin{equation}
+            	\begin{split}
+            		3CNF_{search} = "& \text{On input $\phi$} \\
+            				         & \text{For each clause $c$ $\in \phi$:} \\
+                                     & \tab\text{For each variable $y \in c$:} \\
+                                     & \tab\tab\text{Let $\phi_1 = \phi - y$ from clause $c$} \\
+                                     & \tab\tab\text{Run $M$ on $\phi_1$} \\
+                                     & \tab\tab\text{If $M$ accepts, then set $\phi = \phi_1$} \\
+                                     & \text{return $\phi$}
+            	\end{split}
+            \end{equation}
+
+            $3CNF_{search}$ runs through all 3 variables in all $k$ clauses. Thus, it is completed in $O(3k) \times O(M)$.
+
+            The idea of this machine is that we remove variables from clauses until the clause no longer returns true. If the clause no longer returns true, this means that the removed variable was the only required variable for the clause.
+
+            $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
 
 \end{enumerate}
 \end{document}
