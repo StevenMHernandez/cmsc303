@@ -1,4 +1,3 @@
-
 \documentclass{article}
 \usepackage{amsmath,amsthm}
 \usepackage{amssymb,latexsym}
@@ -130,6 +129,18 @@
             Prove that if $\class{P}=\class{NP}$, then NP is closed under complement, i.e. $\class{NP}=\class{co-NP}$. How can closure of NP under complement hence potentially be used to resolve the P vs NP question?
 
         	% 2
+            Proof: We understand that if $P = NP$, then our TM $S \in NP$ will complete in polynomial time. Thus, we can build a verifier $V_{co-NP}$ which verifies some input $x \in L$ a Language by simply running the $S$ within $V_{co-NP}$.
+            
+            \begin{equation}
+            	\begin{split}
+            		V_{co-NP} = "& \text{On input} \enc{M, x} \\
+            				     & \text{1. Simply run $M$ on $x$, reject if $M$ accepts, otherwise accept.}
+            	\end{split}
+            \end{equation}
+            
+            Because we know a TM can either $accept$, $reject$ or loop forever, having a verifier $V_{NP}$ to show that a machine will $accept$ and a verifier $V_{co-NP}$ to show that a machine will $reject$ on some input would mean we could infer all three states for the TM.
+            
+            For example, if $V_{NP}$ accepts and $V_{co-NP}$ rejects on $z$, we know that $z$ is in the language. If $V_{NP}$ rejects and $V_{co-NP}$ accepts, the input is not in the language. However, if $V_{NP}$ rejects and $V_{co-NP}$ rejects, we know that the TM never accepts or rejects and thus, must loop forever.
 
     \item {[10 marks]} In class, we introduced the language
     \[
