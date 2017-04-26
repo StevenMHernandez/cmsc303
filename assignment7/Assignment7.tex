@@ -213,7 +213,7 @@
 
 
     \end{enumerate}
-    \item {[8 marks]} Let $CNF_k=\set{\enc{\phi}\mid\phi\text{ is a satisfiable CNF-formula where each variable appears in at most }k\text{ places}}$. Show that ${CNF}_3$ is NP-complete. (Hint: Suppose a variable $x$ appears (say) twice. Replace the first and second occurrences of $x$ with new distinct variables $y_1$ and $y_2$, respectively. Next, add clauses to ensure that $y_1=y_2$. To do this in CNF form, recall that $y_1=y_2$ is logically equivalent to $(y_1\implies y_2)\wedge(y_2\implies y_1)$, and that $(a\implies b)$ can be rewritten as $(a\vee \bar{b})\wedge (\bar{b}\vee {a})$. How can this trick be applied more generally when $x$ appears $m>2$ times?)
+    \item {[8 marks]} Let $CNF_k=\set{\enc{\phi}\mid\phi\text{ is a satisfiable CNF-formula where each variable appears in at most }k\text{ places}}$. Show that ${CNF}_3$ is NP-complete. (Hint: Suppose a variable $x$ appears (say) twice. Replace the first and second occurrences of $x$ with new distinct variables $y_1$ and $y_2$, respectively. Next, add clauses to ensure that $y_1=y_2$. To do this in CNF form, recall that $y_1=y_2$ is logically equivalent to $(y_1\implies y_2)\wedge(y_2\implies y_1)$, and that $(a\implies b)$ can be rewritten as $(\bar{a}\vee {b})$. How can this trick be applied more generally when $x$ appears $m>2$ times?)
 
 
         	% 4
