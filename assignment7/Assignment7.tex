@@ -182,7 +182,7 @@
 
             Let $x = (x_1, . . . , x_m)$ be a satisfying set of vertexes in $G$ for $\class{INDEPENDENT-SET}$ for size $k$ where $|x| \geq k$. For $\forall y,z \in x$ we know that $(y,z) \not\in E$, thus by our construction above, $(y,z) \in E_{inv}$. Thus now, we know that $G_{inv}$ would have edges between all $y,z \in x$. Therefore $x \in G_{inv}$ is a clique.
 
-         Suppose $G_{inv}$ has a k-clique. Let $x = (x_1, . . . , x_m)$ satisfy $\class{CLIQUE}$. Thus, there must be an edge between each vertices $q,r \in G_{inv}$. By the reverse of the construction above, that means our for $G$ $q,e \not\in G$. Therefore our vertices would be an independent-set.
+         Suppose $G_{inv}$ has a k-clique. Let $x = (x_1, . . . , x_m)$ satisfy $\class{CLIQUE}$. Thus, there must be an edge between each vertices $q,r \in G_{inv}$. By the reverse of the construction above, that means for our $G$, $q,e \not\in G$. Therefore our vertices would be an independent-set.
 
             $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
 
@@ -190,7 +190,24 @@
 
         	% 3.b
             $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
+            Reference for more information on vertex-cover:
 
+            https://www8.cs.umu.se/kurser/TDBA77/VT06/algorithms/BOOK/BOOK3/NODE108.HTM
+
+            The idea here is that if we have a
+
+            Proof: Suppose we have $G = (V,E)$ a graph which we wish to find a vertex-cover of size at most $k$. If we have a vertex-cover in $G$ of size $k$, then we must have an independent-set in $G$ of size $|V| - k$. Why is this? Because by definition of our independent-set, we are finding any vertices which have edges that are in $E$, but do not connect to any other vertices in our independent-set. What would happen if a vertex in the independent-set connected to another vertex in the independent-set? This show that the edge does not connect to the vertex-cover and thus, we would have a vertex-cover that does not cover all edges and thus is not a vertex-cover by our definition.
+
+            We need to construct a TM $S_{vertex-cover}$ which uses our other TM $S_{independent-set}$ to decide.
+
+            \begin{equation}
+            	\begin{split}
+            		S_{vertex-cover} = "& \text{On input $G(V,E),k$} \\
+            				    & \text{Let $k^\prime = |V| - k$} \\
+            				    & \text{Run $S_{independent-set}$ on $G,k^\prime$} \\
+            				    & \text{accept if $S_{independent-set}$ accepts, otherwise reject."}
+            	\end{split}
+            \end{equation}
 
             $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
 
@@ -222,6 +239,8 @@ Your task is as follows: Show that 3SAT is self-reducible. In other words, given
 
         	% 6
             $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
+            Reference for more information on `self-reducibility': http://www.cs.toronto.edu/~fpitt/20109/CSC363/lectures/LN11.txt
+
             Suppose we have a $\class{3SAT}$ with k clauses (eg. $(x_1 \vee \bar{x_2} \vee x_3) \wedge . . .$). We can create a TM $3CNF_{search}$ modeled:
 
 
