@@ -218,7 +218,33 @@
 
         	% 4
             $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
-            Proof: First we show that $\phi \in NP$.
+            Proof: First we show that $\class{CNF}_3 \in NP$. We can do this easily by setting showing a satisfying value for $\phi$ which can be verified in polynomial time.
+            $\phi = (a \vee a \vee a) \wedge (b \vee b \vee b)$. Our verifier $V$ which takes in input $\phi$ simply runs as follows:
+
+            \begin{equation}
+            	\begin{split}
+            		V = "& \text{On input $\phi,k$} \\
+            			 & \text{For each variable $v \in \phi$} \\
+            			 & \tab\text{Keep a tally of the number of times $v$ appears} \\
+            			 & \tab\text{If tally $> k$, reject} \\
+                         & \text{accept"}
+            	\end{split}
+            \end{equation}
+
+            Now, we can show that $\class{CNF}_k$ is NP-hard. We can show this by creating a reduction from 3-SAT.
+
+            We create a TM $S$ which simulates $\class{CNF}_3$ with TM $3\-SAT$ as well as TM $V$ from above.
+
+            \begin{equation}
+            	\begin{split}
+            		S = "& \text{On input $\phi,k$} \\
+            			 & \text{We simply run $\phi$ on TM $3SAT$, reject if the TM rejects} \\
+            			 & \text{Run $V$, reject if $V$ rejects} \\
+                         & \text{accept"}
+            	\end{split}
+            \end{equation}
+
+            Because $V$ can run in polynomial time, it can be disregarded in checking if $\class{CNF}_k \in$ NP. Thus, what we are left with is $3SAT$ which we've shown in the past is NP-hard. Thus $\class{CNF}_k$ is NP-complete.
 
             $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
 
