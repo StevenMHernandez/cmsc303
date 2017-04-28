@@ -1,0 +1,78 @@
+
+\documentclass{article}
+\usepackage{amsmath,amsthm}
+\usepackage{amssymb,latexsym}
+\usepackage{epsfig}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{fullpage}
+\usepackage{enumerate}
+\usepackage{paralist}
+\usepackage{times}
+
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{question}[theorem]{Question}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{observation}[theorem]{Observation}
+\newtheorem{proposition}{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{fact}[theorem]{Fact}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{example}{Example}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{alg}[theorem]{Algorithm}
+
+\newcommand{\trace}{{\rm Tr}}
+
+\newcommand{\norm}[1]{\left\|\,#1\,\right\|}       % norm
+\newcommand{\onorm}[1]{\norm{#1}_{\mathrm{1}}}      % Euclidean norm for vectors
+\newcommand{\enorm}[1]{\norm{#1}_{\mathrm{2}}}      % Euclidean norm for vectors
+\newcommand{\trnorm}[1]{\norm{#1}_{\mathrm {tr}}}  % trace norm
+\newcommand{\fnorm}[1]{\norm{#1}_{\mathrm {F}}}    % frobenius norm
+\newcommand{\snorm}[1]{\norm{#1}_{\mathrm {\infty}}}    % spectral norm
+
+\newcommand{\set}[1]{{\left\{#1\right\}}}    % braces for set notation
+\newcommand{\ve}[1]{\mathbf{#1}}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+
+\newcommand{\complex}{{\mathbb C}}
+\newcommand{\reals}{{\mathbb R}}
+\newcommand{\ints}{{\mathbb Z}}
+\newcommand{\nats}{{\mathbb N}}
+
+\newcommand{\enc}[1]{\left<#1\right>}
+\newcommand{\spa}[1]{\mathcal{#1}}
+
+\newcommand{\ayes}{A_{\rm yes}} %CHECK
+\newcommand{\ano}{A_{\rm no}} %CHECK
+
+\bibliographystyle{alpha}
+
+\begin{document}
+
+\title{CMSC 303 Introduction to Theory of Computation, VCU\\Spring 2017, Course Mini-Project\\Due: Tuesday, May 2, 2017 in class \\ Steven Hernandez}
+\date{}
+\maketitle
+\vspace{-5mm}
+\noindent Total marks: $26$ marks + $3$ marks bonus for typing your solutions in LaTeX.\vspace{2mm}\\
+
+One of the goals of this course is to train you to be able to expand your education independently, given the tools you've learned here. For this reason, your mini-project will consist of the following task. First, please independently read Sections 8.1 and 8.2 on Space Complexity. This will introduce you to the complexity class PSPACE and Savitch's theorem. Next, answer the following questions.
+
+\begin{enumerate}
+    \item {[2 marks]} In words, which class of problems does PSPACE characterize?
+    \item {[4 marks]} Show that PSPACE is closed under the concatenation and star operations.
+    \item {[4 marks]} Prove that ${\rm NP}\subseteq {\rm PSPACE}$ by giving a polynomial-space algorithm for simulating an NP machine (use Theorem 7.20 for this, which says a language is in NP iff it is decided by a non-deterministic polynomial time Turing machine).
+            \item {[2 marks]} Why is Savitch's theorem surprising, given our study of P versus NP?
+            \item {[14 marks]} This question studies the proof of Savitch's theorem. You may assume the TM $M$ in the proof can compute function $f(n)$ in the proof in $O(f(n))$ space.
+            \begin{enumerate}
+                \item {[2 marks]} In words, give a high-level overview of how the proof of Savitch's theorem works.
+                \item {[6 marks]} The CANYIELD procedure in the proof has 6 steps: Describe in a sentence or two the purpose of each step.
+                \item {[2 marks]} Why does the machine $M$ in the proof correctly simulate the NTM $N$?
+                \item {[4 marks]} Why does $M$ use $O(f^2(n))$ space?
+            \end{enumerate}
+\end{enumerate}
+
+\end{document}
