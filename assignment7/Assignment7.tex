@@ -136,6 +136,9 @@ One of the goals of this course is to train you to be able to expand your educat
 
                 %5.a
             $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
+            The proof shows that a function that runs in NSPACE in polynomial time can be run SPACE in polynomial time as well. To simulate this we begin with a starting configuration $c_1$ and we want to reach an accepting configuration $c_2$ within $t$ steps where $t$ is a polynomial time for input $n$.
+
+            We create a TM which recursively checks whether we can get from a configuration $a$ to some configuration $b$ in $t$ steps by continuously dividing the problem in half. The TM would create a new configuration $m$ which is expected to be between $a$ and $b$, and then run itself no $a$ to $m$ in $t/2$ time as well as $m$ to $b$ in $t/2$ time. (All in PSPACE of course)
 
             $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
 
@@ -144,12 +147,25 @@ One of the goals of this course is to train you to be able to expand your educat
                 %5.b
             $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
 
+            1: If $t = 1$ this means we are simply checking the configuration is itself or the configuration $c_1$ can reach $c_2$ in $t$ steps which is 1 step.
+
+            2: If $t > 1$ we must split and try all configurations between $c_1$ and $c_2$.
+
+            3: Simply check if the first half can be accepted
+
+            4: and that the second half is accepted
+
+            5: If 3 and 4 accept, the TM accepts. However, if they don't we try a different configuration $c_m$, jumping back to 2 until we've tried all configurations using $f(n)$ space.
+
+            6: If the loop does not result in an accept, reject.
+
             $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
 
                 \item {[2 marks]} Why does the machine $M$ in the proof correctly simulate the NTM $N$?
 
                 %5.c
             $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
+            $M$ correctly simulates NTM $N$ because it is running similarly to the way normal NTM would run. It guesses configurations $c_m$ for example, tries out their guess, then tries a new configuration if the machine does not accept. In general, it is searching for a path down an NTM $N$'s branch.
 
             $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
 
@@ -157,6 +173,7 @@ One of the goals of this course is to train you to be able to expand your educat
 
                 %5.d
             $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
+            Because we are recursively trying different values, we are storing configuration for each time we've recursed. These configurations take up $O(f(n))$ space each. In our loop from steps $2$ to $5$, if we do not reach an accepting state, we simply overwrite this failed branch, so that we don't end up exponentially growing in size. Our recursions only reach the depth of $log t$ where $t = 2^{o(f(n))}$, the maximum time the NTM should use per branch. Thus, $log t = O(f(n))$ which we multiply with the size of each configuration equals: $O(f^2(n))$ space.
 
             $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
 
