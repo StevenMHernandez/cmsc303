@@ -8,8 +8,8 @@
 \usepackage{enumerate}
 \usepackage{paralist}
 \usepackage{times}
-\usepackage{algpseudocode}
 \usepackage{color}
+
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{corollary}[theorem]{Corollary}
@@ -24,21 +24,6 @@
 \newtheorem{example}{Example}
 \newtheorem{conjecture}[theorem]{Conjecture}
 \newtheorem{alg}[theorem]{Algorithm}
-
-\newcommand{\eps}{\varepsilon}
-\newcommand{\bra}[1]{\langle #1|}
-\newcommand{\ket}[1]{|#1\rangle}
-\newcommand{\braket}[2]{\langle #1|#2\rangle}
-\newcommand{\ketbra}[2]{\ket{#1}{\bra{#2}}}
-\newcommand{\class}[1]{\text{#1}}
-
-\newcommand{\C}{C}
-\newcommand{\Tr}{Tr} %CHECK
-\newcommand{\Id}{Id} %CHECK
-\newcommand{\Exs}[2]{E_{#1}[#2]} %CHECK
-
-\newcommand{\beq}{\begin{equation}}
-\newcommand{\eeq}{\end{equation}}
 
 \newcommand{\trace}{{\rm Tr}}
 
@@ -58,235 +43,124 @@
 \newcommand{\ints}{{\mathbb Z}}
 \newcommand{\nats}{{\mathbb N}}
 
-\newcommand{\proj}[1]{\mbox{$|#1\rangle \!\langle #1 |$}}
 \newcommand{\enc}[1]{\left<#1\right>}
-
 \newcommand{\spa}[1]{\mathcal{#1}}
-\newcommand{\dens}{D(\spa{A}\otimes\spa{B})}
-\newcommand{\unitaries}{U(\spa{A}\otimes\spa{B})}
 
-\newcommand{\klh}{MAX-$k$-local Hamiltonian}
-\newcommand{\lmax}{\lambda_{\operatorname{max}}}
+\newcommand{\ayes}{A_{\rm yes}} %CHECK
+\newcommand{\ano}{A_{\rm no}} %CHECK
 
 % tab
 \newcommand\tab[1][1cm]{\hspace*{#1}}
-
-\mathchardef\mhyphen="2D
 
 \bibliographystyle{alpha}
 
 \begin{document}
 
-\title{CMSC 303 Introduction to Theory of Computation, VCU\\Spring 2017, Assignment 7\\Due: Thursday, April 27, 2017 in class\\Steven Hernandez}
+\title{CMSC 303 Introduction to Theory of Computation, VCU\\Spring 2017, Course Mini-Project\\Due: Tuesday, May 2, 2017 in class \\ Steven Hernandez}
 \date{}
 \maketitle
-
 \vspace{-5mm}
-\noindent Total marks: $52$ marks + $5$ marks bonus for typing your solutions in LaTeX using the provided A7 template file.\vspace{2mm}\\
+\noindent Total marks: $26$ marks + $3$ marks bonus for typing your solutions in LaTeX.\vspace{2mm}\\
 
-\noindent Unless otherwise noted, the alphabet for all questions below is assumed to be $\Sigma=\set{0,1}$. This assignment focuses on the complexity classes P and NP, as well as polynomial-time reductions.
+One of the goals of this course is to train you to be able to expand your education independently, given the tools you've learned here. For this reason, your mini-project will consist of the following task. First, please independently read Sections 8.1 and 8.2 on Space Complexity. This will introduce you to the complexity class PSPACE and Savitch's theorem. Next, answer the following questions.
+
 \begin{enumerate}
-    \item {[12 marks]} \begin{enumerate}
-        \item {[4 marks]} Let $f(n)=4n^2-30n+6$. Prove that $f(n)\in O(n^2)$. In your proof, give explicit values for $c$ and $n_0$.
+    \item {[2 marks]} In words, which class of problems does PSPACE characterize?
 
-        	% 1.a
+    		%1
             $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
-            Proof:
-
-            $f(n)=4n^2-30n+6$ \\
-            $\leq 4n^2+6$ (since $n \geq 0$) \\
-            $\leq 4n^2+6n^2$ (since $n \geq 0$)\\
-            $= 10n^2$\\
-            $\therefore$ if $c = 10$ and $n_0=8$, implies $f(n)=O(n^2)$.
+            PSPACE is meant to characterize all problems which can be completed on a TM using only $O(f(n))$ cells of the TM where $f(n)$ is a function that can of polynomial time. Savitch’s theorem shows that NP $\subseteq$ PSPACE.
 
             $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
 
-        \item {[4 marks]} Let $f(n)=n^{999}$ and $g(n)=(\sqrt{\log n})^{\sqrt{\log n}}$. Precisely one of the following two claims is true: $f(n)\in O(g(n))$,  $g(n)\in O(f(n))$. Prove whichever one is true. In your proof, give explicit values for $c$ and $n_0$. (Hint: Note that an arbitrary function $f(n)$ can be rewritten as $2^{\log_2(f(n))}$.)
+    \item {[4 marks]} Show that PSPACE is closed under the concatenation and star operations.
 
-        	% 1.b
+    		%2
             $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
-            $g(n)\in O(f(n))$ where $c=1$ and $n_0 = 2$
+            First for concatenation:
 
-            $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
-
-        \item {[4 marks]} This question tests an important subtlety in the definition of ``polynomial-time''.
-             One of the most famous open problems in classical complexity theory is whether the problem of factoring a given integer $N$ into its prime factors is solvable in polynomial time on a classical computer\footnote{In fact, many popular cryptosystems are based on the assumption that this problem is \emph{not} efficiently solvable. Recall from class, however, that in 1994 it was shown by Peter Shor that \emph{quantum} computers can efficiently solve this problem!}. Given positive integer $N$ as input, why is the following naive approach to the factoring problem not polynomial-time?
-                \begin{algorithmic}[1]
-            \State Set $m := 2$.
-            \State Set $S := \emptyset$ for $S$ a multi-set.
-            \While{$m\leq  {N}$}
-                \If{$m$ divides $N$}
-                    \State Set $S\cup \set{m}$.
-                    \State Set $N=N/m$.
-                \Else
-                    \State Set $m=m+1$.
-                \EndIf
-            \EndWhile
-            \State Return the set $S$ of divisors found.
-\end{algorithmic}
-
-        	% 1.c
-            $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
-            The input to this approach is always a single integer, thus $n = 1$.
-            However, the amount of time it takes to process this algorithm is dependant on the value for the input $N$.
-            Based on line three, the time complexity of this algorithm increases as the value of $N$ increases.
-            This increase is exponential and thus, cannot be done in polynomial time.
-
-            Line 7 is a clever, never thought of it that way.
-
-            $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
-
-    \end{enumerate}
-    \item {[6 marks]}
-          Let co-NP denote the complement of NP. In other words, intuitively, co-NP is the class of languages $L$ for which if input $x\not\in L$, then there is an efficiently verifiable proof of this fact, and if $x\in L$, then no proof can cause the verifier to accept.
-
-            Prove that if $\class{P}=\class{NP}$, then NP is closed under complement, i.e. $\class{NP}=\class{co-NP}$. How can closure of NP under complement hence potentially be used to resolve the P vs NP question?
-
-        	% 2
-            $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
-            Proof: We understand that if $P = NP$, then our TM $S \in NP$ will complete in polynomial time. Thus, we can build a verifier $V_{co-NP}$ which verifies some input $x \in L$ a Language by simply running the $S$ within $V_{co-NP}$.
+            Suppose we have two TMs which run in $O(f(n)) \subseteq$ PSPACE, labeled $A$ and $B$ for input(s) $n$. We construct a second TM $C$ which simulates both $A$  and $B$. Our goal is to run $C$ such that $C \subseteq$ PSPACE. We can input into $C$ the input for $A$ and $B$ separated by a delimiter $d \not\in \Sigma$. For this example we will simply use a comma $,$
 
             \begin{equation}
             	\begin{split}
-            		V_{co-NP} = "& \text{On input} \enc{M, x} \\
-            				     & \text{1. Simply run $M$ on $x$, reject if $M$ accepts, otherwise accept.}
+            		C = "& \text{On input $m$} \\
+            			 & \text{Split $m$ on $,$ to retrieve inputs $a$ and $b$} \\
+            			 & \text{Run $A$ on $a$ in PSPACE} \\
+                         & \text{Reset the tape by clearing the content.} \\
+            			 & \text{Return pointer back to the first cell} \\
+                         & \text{Run $B$ on $b$ in PSPACE overwriting anything written by $A$"}
             	\end{split}
             \end{equation}
 
-            Because we know a TM can either $accept$, $reject$ or loop forever, having a verifier $V_{NP}$ to show that a machine will $accept$ and a verifier $V_{co-NP}$ to show that a machine will $reject$ on some input would mean we could infer all three states for the TM.
+            Because we move the pointer back to the first cell and overwrite any values, we are back to a clear TM, thus if $B$ ran in PSPACE normally, it would run in PSPACE this time as well, because there are no remnants from $A$. The amount of space used would be the greater of the space used by $A$ and $B$.
 
-            For example, if $V_{NP}$ accepts and $V_{co-NP}$ rejects on $z$, we know that $z$ is in the language. If $V_{NP}$ rejects and $V_{co-NP}$ accepts, the input is not in the language. However, if $V_{NP}$ rejects and $V_{co-NP}$ rejects, we know that the TM never accepts or rejects and thus, must loop forever.
-
-            $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
-
-    \item {[10 marks]} In class, we introduced the language
-    \[
-        \class{CLIQUE} = \set{\enc{G,k}\mid G\text{ is a graph containing a clique of size at least }k}.
-    \]
-    Consider now two further languages:
-    \begin{eqnarray*}
-        \class{INDEPENDENT-SET} &=& \set{\enc{G,k}\mid G\text{ is a graph containing an independent set of size at least }k}\\
-        \class{VERTEX-COVER} &=& \set{\enc{G,k}\mid G\text{ is a graph containing a vertex cover of size at most }k}.
-    \end{eqnarray*}
-    Here, for graph $G=(V,E)$, an \emph{independent set} $S\subseteq V$ satisfies the property that for any pair of vertices $u,v\in S$, $(u,v)\not\in E$. A \emph{vertex cover} $S\subseteq V$ satisfies the property that for any edge $(u,v)\in E$, at least one of $u$ or $v$ must be in $S$.
-    \begin{enumerate}
-        \item {[4 marks]} Prove that $\class{CLIQUE}\leq_p\class{INDEPENDENT-SET}$. (Hint: Given a graph $G$, think about its \emph{complement}. Google ``complement graph'' for a definition.)
-
-        	% 3.a
-            $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
-            Proof: Suppose we have $G = (V,E)$ which is the graph we wish to find an independent set of size at least $k$. We construct a graph $G_{inv} = (V,E_{inv})$ where $V$ (of $G$) $= V$ of $G_{inv}$. $E_{inv}$ is build based on the edges $E$ of $G$ in this way:
-
-            $\forall v, w \not\in E$, we add an edge to $E_{inv}$. This will create an inversed graph of $G$ where all nodes which were not connected in $G$ are now connected in $G_{inv}$ and where all nodes were connected in $G$ are not connected in $G_{inv}$.
-
-            Proof of Correctness: $\class{INDEPENDENT-SET}$ is satisfiable if and only if $G_{inv}$ has a clique of at least k.
-
-            Let $x = (x_1, . . . , x_m)$ be a satisfying set of vertexes in $G$ for $\class{INDEPENDENT-SET}$ for size $k$ where $|x| \geq k$. For $\forall y,z \in x$ we know that $(y,z) \not\in E$, thus by our construction above, $(y,z) \in E_{inv}$. Thus now, we know that $G_{inv}$ would have edges between all $y,z \in x$. Therefore $x \in G_{inv}$ is a clique.
-
-         Suppose $G_{inv}$ has a k-clique. Let $x = (x_1, . . . , x_m)$ satisfy $\class{CLIQUE}$. Thus, there must be an edge between each vertices $q,r \in G_{inv}$. By the reverse of the construction above, that means for our $G$, $q,e \not\in G$. Therefore our vertices would be an independent-set.
+            Because of this, showing $^*$ is trivial because we can run as many TMs (that are $\subseteq$ PSPACE) on this machine as we wanted. Because each machine runs overtop of the same cells as the previous machine, completely unaware of the past.
 
             $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
 
-        \item {[6 marks]} Prove that $\class{INDEPENDENT-SET}\leq_p\class{VERTEX-COVER}$.
+    \item {[4 marks]} Prove that ${\rm NP}\subseteq {\rm PSPACE}$ by giving a polynomial-space algorithm for simulating an NP machine (use Theorem 7.20 for this, which says a language is in NP iff it is decided by a non-deterministic polynomial time Turing machine).
 
-        	% 3.b
+            %3
             $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
-            Reference for more information on vertex-cover:
+            Theorem 7.20 shows us that a language in NP must be decidable by nondeterministic polynomial time TM. This means that if the time the TM takes is $O(f(n))$, where $f(n)$ takes polynomial time, then there is no way for the TM to use more than polynomial space. If a polynomial time TM spends every step moving left and writing a character, the furthest it could reach would be equal to the amount of time it spent, which itself is polynomial.
 
-            https://www8.cs.umu.se/kurser/TDBA77/VT06/algorithms/BOOK/BOOK3/NODE108.HTM
-
-            The idea here is that if we have a
-
-            Proof: Suppose we have $G = (V,E)$ a graph which we wish to find a vertex-cover of size at most $k$. If we have a vertex-cover in $G$ of size $k$, then we must have an independent-set in $G$ of size $|V| - k$. Why is this? Because by definition of our independent-set, we are finding any vertices which have edges that are in $E$, but do not connect to any other vertices in our independent-set. What would happen if a vertex in the independent-set connected to another vertex in the independent-set? This show that the edge does not connect to the vertex-cover and thus, we would have a vertex-cover that does not cover all edges and thus is not a vertex-cover by our definition.
-
-            We need to construct a TM $S_{vertex-cover}$ which uses our other TM $S_{independent-set}$ to decide.
+            So what we can do is we can create a TM $S$ that models a Breadth First Search of the NTM.
 
             \begin{equation}
             	\begin{split}
-            		S_{vertex-cover} = "& \text{On input $G(V,E),k$} \\
-            				    & \text{Let $k^\prime = |V| - k$} \\
-            				    & \text{Run $S_{independent-set}$ on $G,k^\prime$} \\
-            				    & \text{accept if $S_{independent-set}$ accepts, otherwise reject."}
+            		S = "& \text{On input $n$} \\
+            			 & \text{Starting from the first configuration} \\
+            			 & \text{If the configuration is accepting, accept} \\
+                         & \text{Search each configuration as a BFS, erasing the tape and returning to the first cell after each.} \\
+            			 & \text{accept once an accepting configuration is reached.}
             	\end{split}
             \end{equation}
 
             $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
 
+            \item {[2 marks]} Why is Savitch's theorem surprising, given our study of P versus NP?
 
-    \end{enumerate}
-    \item {[8 marks]} Let $CNF_k=\set{\enc{\phi}\mid\phi\text{ is a satisfiable CNF-formula where each variable appears in at most }k\text{ places}}$. Show that ${CNF}_3$ is NP-complete. (Hint: Suppose a variable $x$ appears (say) twice. Replace the first and second occurrences of $x$ with new distinct variables $y_1$ and $y_2$, respectively. Next, add clauses to ensure that $y_1=y_2$. To do this in CNF form, recall that $y_1=y_2$ is logically equivalent to $(y_1\implies y_2)\wedge(y_2\implies y_1)$, and that $(a\implies b)$ can be rewritten as $(\bar{a}\vee {b})$. How can this trick be applied more generally when $x$ appears $m>2$ times?)
-
-
-        	% 4
+            %4
             $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
-            Proof: First we show that $\class{CNF}_3 \in NP$. We can do this easily by setting showing a satisfying value for $\phi$ which can be verified in polynomial time.
-            $\phi = (a \vee a \vee a) \wedge (b \vee b \vee b)$. Our verifier $V$ which takes in input $\phi$ simply runs as follows:
+            The book made a great statement for Example 8.3 "Space appears to be more powerful than time because space can be reused, whereas time cannot."
 
-            \begin{equation}
-            	\begin{split}
-            		V = "& \text{On input $\phi,k$} \\
-            			 & \text{For each variable $v \in \phi$} \\
-            			 & \tab\text{Keep a tally of the number of times $v$ appears} \\
-            			 & \tab\text{If tally $> k$, reject} \\
-                         & \text{accept"}
-            	\end{split}
-            \end{equation}
+            But what this means is, we can model the hard problems on physical computers, because computers are limited when it comes to memory size, but in essence, could run forever.
 
-            Now, we can show that $\class{CNF}_k$ is NP-hard. We can show this by creating a reduction from 3-SAT.
-
-            We create a TM $S$ which simulates $\class{CNF}_3$ with TM $3\-SAT$ as well as TM $V$ from above.
-
-            \begin{equation}
-            	\begin{split}
-            		S = "& \text{On input $\phi,k$} \\
-            			 & \text{We simply run $\phi$ on TM $3SAT$, reject if the TM rejects} \\
-            			 & \text{Run $V$, reject if $V$ rejects} \\
-                         & \text{accept"}
-            	\end{split}
-            \end{equation}
-
-            Because $V$ can run in polynomial time, it can be disregarded in checking if $\class{CNF}_k \in$ NP. Thus, what we are left with is $3SAT$ which we've shown in the past is NP-hard. Thus $\class{CNF}_k$ is NP-complete.
+            But what else this could mean is, there may be more problems. What sort of problems might require exponential space to compute? This implies a whole new set of problems.
 
             $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
 
-    \item {[8 marks]} It is possible for a problem to be NP-hard without actually being in NP itself. For example, the halting problem from class is clearly not in NP, since it is undecidable. However, in this question, you will show that the language $HALT=\set{\enc{M,x}\mid M\text{ is a TM which halts on input }x}$ is NP-hard. Is the halting problem hence NP-complete?
+            \item {[14 marks]} This question studies the proof of Savitch's theorem. You may assume the TM $M$ in the proof can compute function $f(n)$ in the proof in $O(f(n))$ space.
+            \begin{enumerate}
+                \item {[2 marks]} In words, give a high-level overview of how the proof of Savitch's theorem works.
 
-
-        	% 5
+                %5.a
             $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
-            A problem NP-hard means that all problems in NP are reducible to this problem in polynomial time. By this, obviously all problems are reducible $\class{HALT}$ because all problems can be modeled into a language which can be defined by a TM. To answer the problem, we would have to be able to decide if this TM will halt, and thus $\class{HALT}$ could be considered a `parent` or `harder`' problem.
-
-            This does not mean that the halting problem is NP-complete, because as stated in the question, "the halting problem is clearly not in NP". To be NP-complete, a problem must initially be in NP.
 
             $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
 
-    \item {[8 marks]} In class, we have focused on \emph{decision} problems, i.e. deciding whether $x\in L$ or not. For example, given a 3-CNF formula $\phi$, recall that the decision problem 3SAT asks whether $\phi$ is satisfiable or not. In practice, however, we may not just want a YES or NO answer, but also an actual assignment which satisfies $\phi$ whenever $\phi$ is satisfiable. It turns out that in certain settings, being able to solve the \emph{decision} version of the problem (e.g. 3SAT) in polynomial time implies we can also solve the \emph{search} version (e.g. find the satisfying assignment itself) in polynomial time. Problems satisfying this property are called \emph{self-reducible}.
+                \item {[6 marks]} The CANYIELD procedure in the proof has 6 steps: Describe in a sentence or two the purpose of each step.
 
-Your task is as follows: Show that 3SAT is self-reducible. In other words, given any 3-CNF formula $\phi$ and a polynomial-time black-box $M$ for determining if $\phi$ is satisfiable, show how to find a satisfying assignment for $\phi$ in polynomial time. You may assume that $M$ is able to decide all CNF formulae with {at most} 3 variables per clause.
-
-        	% 6
+                %5.b
             $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
-            Reference for more information on `self-reducibility': http://www.cs.toronto.edu/~fpitt/20109/CSC363/lectures/LN11.txt
-
-            Suppose we have a $\class{3SAT}$ with k clauses (eg. $(x_1 \vee \bar{x_2} \vee x_3) \wedge . . .$). We can create a TM $3CNF_{search}$ modeled:
-
-
-            \begin{equation}
-            	\begin{split}
-            		3CNF_{search} = "& \text{On input $\phi$} \\
-            				         & \text{For each clause $c$ $\in \phi$:} \\
-                                     & \tab\text{For each variable $y \in c$:} \\
-                                     & \tab\tab\text{Let $\phi_1 = \phi - y$ from clause $c$} \\
-                                     & \tab\tab\text{Run $M$ on $\phi_1$} \\
-                                     & \tab\tab\text{If $M$ accepts, then set $\phi = \phi_1$} \\
-                                     & \text{return $\phi$}
-            	\end{split}
-            \end{equation}
-
-            $3CNF_{search}$ runs through all 3 variables in all $k$ clauses. Thus, it is completed in $O(3k) \times O(M)$.
-
-            The idea of this machine is that we remove variables from clauses until the clause no longer returns true. If the clause no longer returns true, this means that the removed variable was the only required variable for the clause.
 
             $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
 
+                \item {[2 marks]} Why does the machine $M$ in the proof correctly simulate the NTM $N$?
+
+                %5.c
+            $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
+
+            $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
+
+                \item {[4 marks]} Why does $M$ use $O(f^2(n))$ space?
+
+                %5.d
+            $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
+
+            $\textcolor[RGB]{220,220,220}{\rule{\linewidth}{0.2pt}}$
+
+            \end{enumerate}
 \end{enumerate}
+
 \end{document}
